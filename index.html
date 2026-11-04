@@ -43,14 +43,20 @@ const SUPABASE_ANON_KEY = "sb_publishable_9tKr51GC0EObygn3aYS71A_ivI-EcT7";
 const sb = window.supabase?.createClient ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
 let products=[],cart=[],user=null,isAdmin=false;
 const $=id=>document.getElementById(id), money=n=>new Intl.NumberFormat("vi-VN").format(Number(n)||0)+"₫";
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function showProductIcon(value){
+ const v=String(value||"✦").trim();
+ if(/\.(png|jpg|jpeg|webp|gif)(\?.*)?$/i.test(v)){
+  return `<img src="${esc(v)}" alt="Ảnh sản phẩm">`;
+ }
+ return esc(v);
+}
 function toast(s){$("toast").textContent=s;$("toast").classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2600)}
 function modal(title,html){$("modalTitle").textContent=title;$("modalBody").innerHTML=html;$("modalBg").classList.add("show")}
 function closeModal(){$("modalBg").classList.remove("show")}
 function showView(v){["shop","orders","account","admin"].forEach(x=>$(x+"View").classList.toggle("hidden",x!==v));document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===v));if(v==="orders")loadMyOrders();if(v==="admin")loadAdmin()}
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
 $("modalClose").onclick=closeModal;$("modalBg").onclick=e=>{if(e.target===$("modalBg"))closeModal()};
-function render(){const q=$("search").value.trim().toLowerCase(),cat=$("category").value,sort=$("sort").value;let a=products.filter(p=>(p.name+" "+(p.description||"")).toLowerCase().includes(q)&&(!cat||p.category===cat));if(sort==="low")a.sort((x,y)=>x.price-y.price);if(sort==="high")a.sort((x,y)=>y.price-x.price);$("productGrid").innerHTML=a.length?a.map(p=>`<article class="card"><div class="art">${esc(p.icon||"✦")}</div><p class="tag">${esc(p.category)}</p><h3>${esc(p.name)}</h3><p class="muted">${esc(p.description||"")}</p><div class="price">${money(p.price)}</div><p class="muted">Còn ${Number(p.stock)||0} sản phẩm • SKU: ${esc(p.sku||"")}</p><button class="btn primary" ${p.stock<1?"disabled":""} onclick="addCart('${p.id}')">${p.stock<1?"Hết hàng":"Thêm vào giỏ"}</button></article>`).join(""):'<div class="card">Chưa có sản phẩm hoặc không có kết quả phù hợp.</div>';const old=cat;const cats=[...new Set(products.map(p=>p.category).filter(Boolean))];$("category").innerHTML='<option value="">Tất cả danh mục</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");$("category").value=cats.includes(old)?old:""}
+function render(){const q=$("search").value.trim().toLowerCase(),cat=$("category").value,sort=$("sort").value;let a=products.filter(p=>(p.name+" "+(p.description||"")).toLowerCase().includes(q)&&(!cat||p.category===cat));if(sort==="low")a.sort((x,y)=>x.price-y.price);if(sort==="high")a.sort((x,y)=>y.price-x.price);$("productGrid").innerHTML=a.length?a.map(p=>`<article class="card"><div class="art">${showProductIcon(p.icon)}</div><p class="tag">${esc(p.category)}</p><h3>${esc(p.name)}</h3><p class="muted">${esc(p.description||"")}</p><div class="price">${money(p.price)}</div><p class="muted">Còn ${Number(p.stock)||0} sản phẩm • SKU: ${esc(p.sku||"")}</p><button class="btn primary" ${p.stock<1?"disabled":""} onclick="addCart('${p.id}')">${p.stock<1?"Hết hàng":"Thêm vào giỏ"}</button></article>`).join(""):'<div class="card">Chưa có sản phẩm hoặc không có kết quả phù hợp.</div>';const old=cat;const cats=[...new Set(products.map(p=>p.category).filter(Boolean))];$("category").innerHTML='<option value="">Tất cả danh mục</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");$("category").value=cats.includes(old)?old:""}
 async function loadProducts(){const {data,error}=await sb.from("products").select("*").eq("active",true).order("created_at",{ascending:false});if(error){toast("Không tải được sản phẩm: "+error.message);products=[]}else products=data||[];render()}
 function updateCartCount(){$("cartCount").textContent=cart.reduce((s,x)=>s+x.qty,0)}
 function addCart(id){const p=products.find(x=>String(x.id)===String(id));if(!p)return toast("Không tìm thấy sản phẩm");const found=cart.find(x=>String(x.id)===String(id));if((found?.qty||0)>=Number(p.stock))return toast("Số lượng vượt tồn kho");if(found)found.qty++;else cart.push({id:p.id,qty:1});updateCartCount();toast("Đã thêm vào giỏ")}
