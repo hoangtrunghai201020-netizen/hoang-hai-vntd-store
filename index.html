@@ -4,9 +4,24 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#070b12"><title>HOÀNG HẢI VNTD — Digital Store</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-:root{--bg:#060a10;--line:#203149;--cyan:#00e5ee;--muted:#91a0b5;--white:#f5f8fc}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background-image:linear-gradient(#00e5ee0a 1px,transparent 1px),linear-gradient(90deg,#00e5ee0a 1px,transparent 1px);background-size:58px 58px}
+<style>:root{
+ --bg:#060a10;
+ --line:#203149;
+ --cyan:#00e5ee;
+ --muted:#91a0b5;
+ --white:#f5f8fc;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--white);
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+ background-image:linear-gradient(#060a10bb,#060a10dd),url("./banner.png.PNG");
+ background-size:cover;
+ background-position:center;
+ background-attachment:fixed;
+}
 button,input,textarea,select{font:inherit}button{cursor:pointer}.wrap{max-width:1120px;margin:auto;padding:0 17px}.top{position:sticky;top:0;z-index:5;background:#060a10f2;backdrop-filter:blur(12px);border-bottom:1px solid #00e5ee33}.nav{min-height:66px;display:flex;align-items:center;justify-content:space-between;gap:10px}.logo{font-weight:950;color:var(--cyan)}.logo small{display:block;color:#a8b4c6;font-size:9px;letter-spacing:2px}.links{display:flex;gap:4px;flex-wrap:wrap}.links button,.ghost{background:transparent;color:#aeb9c9;border:0;padding:10px;border-radius:9px}.links button.active{color:var(--cyan);background:#00e5ee14}.hero{padding:40px 0 24px}.eyebrow,.tag{color:var(--cyan);font-size:11px;letter-spacing:2px;font-weight:900}.hero h1{font-size:clamp(32px,7vw,56px);line-height:1.05;margin:12px 0}.hero h1 span{color:var(--cyan)}p{color:var(--muted);line-height:1.6}.btn{border:1px solid var(--line);background:#121e2f;color:white;border-radius:11px;padding:12px 16px;font-weight:800}.primary{background:var(--cyan);border-color:var(--cyan);color:#001216}.danger{border-color:#79333d;color:#ff9299}.small{padding:8px 10px;font-size:12px}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}.field{background:#0e1725;color:white;border:1px solid var(--line);padding:12px;border-radius:10px;min-width:0}.toolbar input{flex:1;min-width:160px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.card,.panel{background:linear-gradient(150deg,#121d2d,#0b121d);border:1px solid var(--line);border-radius:16px;padding:15px;min-width:0}.art{height:110px;display:grid;place-items:center;border-radius:12px;background:radial-gradient(circle,#00e5ee35,transparent 65%),#0b1422;font-size:42px}.price{font-size:21px;color:var(--cyan);font-weight:950}.muted{color:var(--muted);font-size:12px}.section{padding:22px 0}.hidden{display:none!important}.panel{margin:15px 0;background:#0e1725}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.formrow{display:grid;gap:6px;margin:10px 0}.formrow label{font-size:12px;color:#b8c4d5}.formrow input,.formrow textarea{width:100%;background:#070e18;color:white;border:1px solid var(--line);border-radius:9px;padding:11px}.formrow textarea{min-height:70px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:580px}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--cyan)}.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.notice{border:1px solid #8c6d2c;background:#4b37141c;border-radius:12px;padding:12px;color:#e9d59b;font-size:12px;line-height:1.5}.modalbg{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:flex-end;justify-content:center;padding:10px}.modalbg.show{display:flex}.modal{width:min(100%,560px);max-height:90vh;overflow:auto;background:#111b2b;border:1px solid #2a405d;border-radius:18px;padding:18px}.modalhead{display:flex;justify-content:space-between;align-items:center}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#dfffff;color:#001216;padding:11px 16px;border-radius:10px;display:none;z-index:30;font-weight:800;max-width:90%;text-align:center}.toast.show{display:block}footer{border-top:1px solid var(--line);margin-top:35px;padding:24px 0;color:var(--muted);font-size:12px}
 @media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nav{align-items:flex-start;padding:12px 0;flex-direction:column}.links{width:100%;justify-content:space-between}.links button{font-size:11px;padding:8px 6px}.formgrid{grid-template-columns:1fr}.hero{padding-top:28px}}@media(max-width:390px){.grid{grid-template-columns:1fr}}
 </style>
