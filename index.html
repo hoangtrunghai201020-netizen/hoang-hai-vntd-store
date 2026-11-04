@@ -27,15 +27,25 @@ button:disabled,.btn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.4
 @keyframes activePulse{0%,100%{box-shadow:0 0 9px #c084fc88,0 0 20px #9333ea55,inset 0 0 12px #fff2}50%{box-shadow:0 0 15px #e9d5ff,0 0 32px #9333eaaa,inset 0 0 18px #fff3}}
 @media(prefers-reduced-motion:reduce){button,.btn,button:before,.btn:before,.links button.active{animation:none!important;transition:none!important}}
 @media(max-width:700px){.nav{align-items:flex-start;flex-direction:column}.links{justify-content:flex-start}.links button{padding:9px 11px;font-size:12px}.toolbar,.formgrid{grid-template-columns:1fr}.hero{margin-top:16px}.hero-copy{padding:18px}.hero-art{min-height:190px;object-fit:cover}.wrap{width:94%}}
+
+/* WALLET + DEPOSIT */
+.wallet-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.wallet-box{border:1px solid #8b5cf688;border-radius:15px;padding:14px;background:linear-gradient(135deg,#21113c,#10172c);margin:12px 0}
+.wallet-amount{font-size:28px;font-weight:950;color:#67e8f9;text-shadow:0 0 15px #22d3ee66}
+.wallet-qr{display:block;width:min(250px,100%);margin:12px auto;border-radius:12px;background:white;padding:7px}
+.wallet-hint{font-size:12px;color:#d8c8ee;line-height:1.6}
+#topupBtn{background:linear-gradient(110deg,#7c3aed,#c026d3,#2563eb);border-color:#e9d5ff;box-shadow:0 0 16px #9333ea99}
+@media(max-width:700px){#topupBtn,#walletBtn{font-size:11px;padding:9px}}
+
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap nav"><div class="logo">HOÀNG HẢI VNTD<small>DIGITAL STORE</small></div><nav class="links"><button class="active" data-view="shop">Trang chủ</button><button data-view="orders">Đơn hàng</button><button data-view="account">Tài khoản</button><button data-view="admin">ADMIN</button><button id="cartBtn">Giỏ (<span id="cartCount">0</span>)</button></nav></div></header>
+<header class="top"><div class="wrap nav"><div class="logo">HOÀNG HẢI VNTD<small>DIGITAL STORE</small></div><nav class="links"><button class="active" data-view="shop">Trang chủ</button><button data-view="orders">Đơn hàng</button><button data-view="account">Tài khoản</button><button data-view="admin">ADMIN</button><button id="walletBtn" onclick="openWallet()">💎 Ví: <span id="walletBalance">0 ₫</span></button><button class="btn primary" id="topupBtn" onclick="openTopup()">＋ NẠP TIỀN</button><button id="cartBtn">🛒 Giỏ (<span id="cartCount">0</span>)</button></nav></div></header>
 <main class="wrap">
 <section id="shopView"><div class="hero"><img class="hero-art" src="anime-innovacheat.png" alt="HOÀNG HẢI VNTD INNOVACHEAT anime banner"><div class="hero-copy"><div class="eyebrow">WELCOME TO OUR DIGITAL STORE</div><h1>SẢN PHẨM SỐ<br><span>NHANH • GỌN • TIỆN</span></h1><p>Khám phá sản phẩm số, xem tồn kho và gửi yêu cầu đặt hàng từ iPhone.</p><button class="btn primary" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Khám phá sản phẩm ↓</button></div></div><h2 id="catalog">Danh mục sản phẩm</h2><p class="muted">Sản phẩm được quản lý từ trang ADMIN.</p><div class="toolbar"><input class="field" id="search" placeholder="Tìm kiếm sản phẩm..."><select class="field" id="category"><option value="">Tất cả danh mục</option></select><select class="field" id="sort"><option value="new">Mới nhất</option><option value="low">Giá thấp → cao</option><option value="high">Giá cao → thấp</option></select></div><div class="grid" id="productGrid"></div></section>
 <section id="ordersView" class="section hidden"><h2>Đơn hàng của tôi</h2><div id="myOrders" class="panel">Đăng nhập để xem đơn hàng.</div></section>
 <section id="accountView" class="section hidden"><h2>Tài khoản khách hàng</h2><div class="panel"><div id="sessionInfo" class="muted">Chưa đăng nhập</div><div class="formgrid"><div><h3>Đăng ký</h3><div class="formrow"><label>Email</label><input id="signupEmail" type="email" autocomplete="email"></div><div class="formrow"><label>Mật khẩu (ít nhất 8 ký tự)</label><input id="signupPass" type="password" autocomplete="new-password"></div><button class="btn primary" id="signupBtn">Tạo tài khoản</button></div><div><h3>Đăng nhập</h3><div class="formrow"><label>Email</label><input id="loginEmail" type="email" autocomplete="email"></div><div class="formrow"><label>Mật khẩu</label><input id="loginPass" type="password" autocomplete="current-password"></div><button class="btn primary" id="loginBtn">Đăng nhập</button> <button class="btn" id="logoutBtn">Đăng xuất</button></div></div></div></section>
-<section id="adminView" class="section hidden"><h2>Quản trị cửa hàng</h2><div class="notice">Chỉ tài khoản được cấp role ADMIN trong bảng profiles mới có quyền quản trị. Không đặt secret/service_role key trong mã HTML.</div><div class="panel"><div class="row"><h3>Thêm / sửa sản phẩm</h3><span class="muted" id="adminStatus">Đang kiểm tra quyền...</span></div><form id="productForm"><input type="hidden" id="editId"><div class="formgrid"><div class="formrow"><label>Tên sản phẩm</label><input id="pName" required maxlength="120"></div><div class="formrow"><label>Danh mục</label><input id="pCategory" required maxlength="60"></div><div class="formrow"><label>Giá (VND)</label><input id="pPrice" type="number" min="0" required></div><div class="formrow"><label>Số lượng tồn kho</label><input id="pStock" type="number" min="0" required></div><div class="formrow"><label>Mã SKU</label><input id="pSku" required maxlength="60"></div><div class="formrow"><label>Ảnh hoặc biểu tượng</label><input id="pIcon" value="✦" maxlength="300"></div></div><div class="formrow"><label>Mô tả</label><textarea id="pDesc" maxlength="1000"></textarea></div><button class="btn primary" type="submit">Lưu sản phẩm</button> <button class="btn" type="button" id="resetProduct">Xóa nội dung</button></form></div><div class="panel"><h3>Kho sản phẩm</h3><div class="tablewrap"><table><thead><tr><th>Sản phẩm / SKU</th><th>Giá</th><th>Tồn</th><th>Thao tác</th></tr></thead><tbody id="inventory"></tbody></table></div></div><div class="panel"><h3>Quản lý đơn hàng</h3><div class="tablewrap"><table><thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Tổng</th><th>Trạng thái</th><th>Cập nhật</th></tr></thead><tbody id="allOrders"></tbody></table></div></div></section>
+<section id="adminView" class="section hidden"><h2>Quản trị cửa hàng</h2><div class="notice">Chỉ tài khoản được cấp role ADMIN trong bảng profiles mới có quyền quản trị. Không đặt secret/service_role key trong mã HTML.</div><div class="panel"><div class="row"><h3>Thêm / sửa sản phẩm</h3><span class="muted" id="adminStatus">Đang kiểm tra quyền...</span></div><form id="productForm"><input type="hidden" id="editId"><div class="formgrid"><div class="formrow"><label>Tên sản phẩm</label><input id="pName" required maxlength="120"></div><div class="formrow"><label>Danh mục</label><input id="pCategory" required maxlength="60"></div><div class="formrow"><label>Giá (VND)</label><input id="pPrice" type="number" min="0" required></div><div class="formrow"><label>Số lượng tồn kho</label><input id="pStock" type="number" min="0" required></div><div class="formrow"><label>Mã SKU</label><input id="pSku" required maxlength="60"></div><div class="formrow"><label>Ảnh hoặc biểu tượng</label><input id="pIcon" value="✦" maxlength="300"></div></div><div class="formrow"><label>Mô tả</label><textarea id="pDesc" maxlength="1000"></textarea></div><button class="btn primary" type="submit">Lưu sản phẩm</button> <button class="btn" type="button" id="resetProduct">Xóa nội dung</button></form></div><div class="panel"><h3>Kho sản phẩm</h3><div class="tablewrap"><table><thead><tr><th>Sản phẩm / SKU</th><th>Giá</th><th>Tồn</th><th>Thao tác</th></tr></thead><tbody id="inventory"></tbody></table></div></div><div class="panel"><h3>Quản lý đơn hàng</h3><div class="tablewrap"><table><thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Tổng</th><th>Trạng thái</th><th>Cập nhật</th></tr></thead><tbody id="allOrders"></tbody></table></div></div><div class="panel"><h3>Yêu cầu nạp tiền</h3><p class="muted">ADMIN kiểm tra tiền đã vào tài khoản trước khi duyệt.</p><div class="tablewrap"><table><thead><tr><th>Khách</th><th>Số tiền</th><th>Nội dung</th><th>Trạng thái</th><th>Duyệt</th></tr></thead><tbody id="depositRequests"><tr><td colspan="5">Đang tải...</td></tr></tbody></table></div></div></section>
 <div class="panel"><h3>Thanh toán</h3><p class="muted">Bản hiện tại chỉ ghi nhận đơn chờ thanh toán, chưa thu tiền thật. Tích hợp VNPay/MoMo/ZaloPay cần backend riêng để giữ bí mật khóa và xác minh webhook.</p></div>
 </main><footer><div class="wrap">© <span id="year"></span> HOÀNG HẢI VNTD • Digital Store</div></footer>
 <div class="modalbg" id="modalBg"><div class="modal"><div class="modalhead"><h3 id="modalTitle">Giỏ hàng</h3><button class="btn small" id="modalClose">Đóng ✕</button></div><div id="modalBody"></div></div></div><div class="toast" id="toast"></div>
@@ -62,17 +72,110 @@ $("cartBtn").onclick=showCart;
 function showCart(){const total=cart.reduce((s,x)=>{const p=products.find(p=>String(p.id)===String(x.id));return s+(p?Number(p.price)*x.qty:0)},0);const lines=cart.map(x=>{const p=products.find(p=>String(p.id)===String(x.id));if(!p)return "";return `<div class="row"><span>${esc(p.name)} × ${x.qty}</span><b>${money(p.price*x.qty)}</b><button class="btn small" onclick="removeCart('${esc(p.id)}')">Xóa</button></div>`}).join("");modal("Giỏ hàng",`${lines||"<p>Giỏ hàng trống.</p>"}<hr><p>Tổng: <b>${money(total)}</b></p>${cart.length?'<button class="btn primary" onclick="checkout()">Tạo đơn hàng</button>':""}`)}
 function removeCart(id){cart=cart.filter(x=>String(x.id)!==String(id));updateCartCount();showCart()}
 async function checkout(){if(!cart.length)return toast("Giỏ hàng đang trống");if(!user){toast("Đăng nhập trước khi đặt hàng");closeModal();showView("account");return}const lines=cart.map(x=>{const p=products.find(p=>String(p.id)===String(x.id));return {product_id:x.id,quantity:x.qty,unit_price:Number(p.price)}});const total=lines.reduce((s,x)=>s+x.quantity*x.unit_price,0);modal("Xác nhận đặt hàng",`<p>Tổng dự kiến: <b class="price">${money(total)}</b></p><p>Đơn sẽ ở trạng thái chờ thanh toán. Chưa thu tiền thật.</p><button class="btn primary" id="confirmOrder">Xác nhận tạo đơn</button>`);$("confirmOrder").onclick=async()=>{const {data,error}=await sb.from("orders").insert({user_id:user.id,total_amount:total,status:"pending_payment",items:lines}).select().single();if(error)return toast("Không tạo được đơn: "+error.message);cart=[];updateCartCount();closeModal();toast("Đã tạo đơn #"+data.id);showView("orders")}}
-async function authRefresh(){if(!sb)return;const {data}=await sb.auth.getUser();user=data.user||null;$("sessionInfo").textContent=user?"Đã đăng nhập: "+user.email:"Chưa đăng nhập";isAdmin=false;if(user){const {data:p,error}=await sb.from("profiles").select("role").eq("id",user.id).maybeSingle();if(!error)isAdmin=p?.role==="admin"}}
+async function authRefresh(){if(!sb)return;const {data}=await sb.auth.getUser();user=data.user||null;$("sessionInfo").textContent=user?"Đã đăng nhập: "+user.email:"Chưa đăng nhập";isAdmin=false;if(user){const {data:p,error}=await sb.from("profiles").select("role").eq("id",user.id).maybeSingle();if(!error)isAdmin=p?.role==="admin"}await loadWallet()}
 $("signupBtn").onclick=async()=>{if(!$("signupEmail").value||$("signupPass").value.length<8)return toast("Nhập email hợp lệ và mật khẩu ít nhất 8 ký tự");const {error}=await sb.auth.signUp({email:$("signupEmail").value.trim(),password:$("signupPass").value});toast(error?error.message:"Đăng ký thành công. Hãy kiểm tra email để xác nhận tài khoản.")};
 $("loginBtn").onclick=async()=>{const {error}=await sb.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPass").value});if(error)toast(error.message);else{await authRefresh();toast("Đăng nhập thành công");showView("account")}};
 $("logoutBtn").onclick=async()=>{const {error}=await sb.auth.signOut();if(error)toast(error.message);else{user=null;isAdmin=false;await authRefresh();toast("Đã đăng xuất")}};
-async function loadMyOrders(){if(!user){$("myOrders").textContent="Đăng nhập để xem đơn hàng.";return}const {data,error}=await sb.from("orders").select("id,total_amount,status,created_at").order("created_at",{ascending:false});$("myOrders").innerHTML=error?esc(error.message):(data||[]).map(o=>`<p>Đơn #${o.id} — ${money(o.total_amount)} — ${esc(o.status)}</p>`).join("")||"Chưa có đơn hàng."}
-async function loadAdmin(){await authRefresh();$("adminStatus").textContent=isAdmin?"Đã xác thực ADMIN":"Chỉ dành cho tài khoản ADMIN";$("productForm").querySelectorAll("input,textarea,button").forEach(x=>x.disabled=!isAdmin);if(!isAdmin){$("inventory").innerHTML='<tr><td colspan="4">Bạn chưa có quyền quản trị.</td></tr>';$ ("allOrders").innerHTML="";return}const {data:ps,error}=await sb.from("products").select("*").order("created_at",{ascending:false});if(error){$("inventory").innerHTML=`<tr><td colspan="4">${esc(error.message)}</td></tr>`;return}const all=ps||[];products=all.filter(p=>p.active);render();$("inventory").innerHTML=all.map(p=>`<tr><td>${esc(p.name)}<br><small>${esc(p.sku)}</small></td><td>${money(p.price)}</td><td>${p.stock}</td><td><button class="btn small" onclick="editProduct('${esc(p.id)}')">Sửa</button> <button class="btn small danger" onclick="deleteProduct('${esc(p.id)}')">Ẩn</button></td></tr>`).join("");const {data:os,error:oe}=await sb.from("orders").select("id,user_id,total_amount,status").order("created_at",{ascending:false}).limit(100);$("allOrders").innerHTML=oe?`<tr><td colspan="5">${esc(oe.message)}</td></tr>`:(os||[]).map(o=>`<tr><td>${o.id}</td><td>${esc(o.user_id)}</td><td>${money(o.total_amount)}</td><td>${esc(o.status)}</td><td><select class="field" onchange="setOrderStatus('${esc(o.id)}',this.value)"><option value="pending_payment" ${o.status==="pending_payment"?"selected":""}>Chờ thanh toán</option><option value="paid" ${o.status==="paid"?"selected":""}>Đã thanh toán</option><option value="processing" ${o.status==="processing"?"selected":""}>Đang xử lý</option><option value="completed" ${o.status==="completed"?"selected":""}>Hoàn tất</option><option value="cancelled" ${o.status==="cancelled"?"selected":""}>Đã hủy</option></select></td></tr>`).join("")}
+async function loadMyOrders(){if(!user){$("myOrders").textContent="Đăng nhập để xem đơn hàng.";return}const {data,error}=await sb.from("orders").select("id,total_amount,status,created_at").eq("user_id",user.id).order("created_at",{ascending:false});$("myOrders").innerHTML=error?esc(error.message):(data||[]).map(o=>`<p>Đơn #${o.id} — ${money(o.total_amount)} — ${esc(o.status)}</p>`).join("")||"Chưa có đơn hàng."}
+async function loadAdmin(){await authRefresh();$("adminStatus").textContent=isAdmin?"Đã xác thực ADMIN":"Chỉ dành cho tài khoản ADMIN";$("productForm").querySelectorAll("input,textarea,button").forEach(x=>x.disabled=!isAdmin);if(!isAdmin){$("inventory").innerHTML='<tr><td colspan="4">Bạn chưa có quyền quản trị.</td></tr>';$("allOrders").innerHTML="";return}const {data:ps,error}=await sb.from("products").select("*").order("created_at",{ascending:false});if(error){$("inventory").innerHTML=`<tr><td colspan="4">${esc(error.message)}</td></tr>`;return}const all=ps||[];products=all.filter(p=>p.active);render();$("inventory").innerHTML=all.map(p=>`<tr><td>${esc(p.name)}<br><small>${esc(p.sku)}</small></td><td>${money(p.price)}</td><td>${p.stock}</td><td><button class="btn small" onclick="editProduct('${esc(p.id)}')">Sửa</button> <button class="btn small danger" onclick="deleteProduct('${esc(p.id)}')">Ẩn</button></td></tr>`).join("");const {data:os,error:oe}=await sb.from("orders").select("id,user_id,total_amount,status").order("created_at",{ascending:false}).limit(100);$("allOrders").innerHTML=oe?`<tr><td colspan="5">${esc(oe.message)}</td></tr>`:(os||[]).map(o=>`<tr><td>${o.id}</td><td>${esc(o.user_id)}</td><td>${money(o.total_amount)}</td><td>${esc(o.status)}</td><td><select class="field" onchange="setOrderStatus('${esc(o.id)}',this.value)"><option value="pending_payment" ${o.status==="pending_payment"?"selected":""}>Chờ thanh toán</option><option value="paid" ${o.status==="paid"?"selected":""}>Đã thanh toán</option><option value="processing" ${o.status==="processing"?"selected":""}>Đang xử lý</option><option value="completed" ${o.status==="completed"?"selected":""}>Hoàn tất</option><option value="cancelled" ${o.status==="cancelled"?"selected":""}>Đã hủy</option></select></td></tr>`).join("");await loadAdminDeposits()}
 function editProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p)return;$("editId").value=p.id;$("pName").value=p.name;$("pCategory").value=p.category;$("pPrice").value=p.price;$("pStock").value=p.stock;$("pSku").value=p.sku;$("pIcon").value=p.icon||"✦";$("pDesc").value=p.description||"";window.scrollTo({top:$("productForm").getBoundingClientRect().top+window.scrollY-90,behavior:"smooth"})}
 $("resetProduct").onclick=()=>{$("productForm").reset();$("editId").value="";$("pIcon").value="✦"};
 $("productForm").onsubmit=async e=>{e.preventDefault();if(!isAdmin||!sb)return;const p={name:$("pName").value.trim(),category:$("pCategory").value.trim(),price:Number($("pPrice").value),stock:Number($("pStock").value),sku:$("pSku").value.trim(),icon:$("pIcon").value.trim()||"✦",description:$("pDesc").value.trim(),active:true};const id=$("editId").value;const result=id?await sb.from("products").update(p).eq("id",id):await sb.from("products").insert(p);if(result.error)return toast(result.error.message);$("productForm").reset();$("editId").value="";$("pIcon").value="✦";toast("Đã lưu sản phẩm");await loadAdmin();await loadProducts()};
 async function deleteProduct(id){if(!isAdmin||!confirm("Ẩn sản phẩm này khỏi cửa hàng?"))return;const {error}=await sb.from("products").update({active:false}).eq("id",id);if(error)toast(error.message);else{toast("Đã ẩn sản phẩm");await loadAdmin();await loadProducts()}}
 async function setOrderStatus(id,status){if(!isAdmin)return;const {error}=await sb.from("orders").update({status}).eq("id",id);toast(error?error.message:"Đã cập nhật trạng thái")}
+
+/* WALLET: requires schema-wallet.sql to be run in Supabase SQL Editor */
+const BANK_ACCOUNT = "0363942913";
+const BANK_NAME = "HOANG TRUNG HAI";
+const BANK_CODE = "MB";
+let currentWalletBalance = 0;
+
+function walletMemo(){
+  const suffix = user?.id ? user.id.replace(/-/g,"").slice(0,8).toUpperCase() : "KHACH";
+  return "NAP HHVNTD " + suffix;
+}
+function openWallet(){
+  if(!user){toast("Đăng nhập để sử dụng ví VND");showView("account");return}
+  modal("VÍ VND", `
+    <div class="wallet-box"><div class="muted">Số dư hiện tại</div><div class="wallet-amount">${money(currentWalletBalance)}</div></div>
+    <div class="wallet-actions"><button class="btn primary" onclick="openTopup()">＋ Nạp tiền</button><button class="btn" onclick="loadWalletHistory()">Lịch sử giao dịch</button></div>
+    <div id="walletHistory" class="wallet-hint">Chọn “Lịch sử giao dịch” để xem biến động số dư.</div>
+  `);
+}
+function openTopup(){
+  if(!user){toast("Đăng nhập trước khi nạp tiền");showView("account");return}
+  const memo = walletMemo();
+  modal("NẠP TIỀN VÍ VND", `
+    <p class="muted">Nhập số tiền, quét QR hoặc chuyển khoản đúng nội dung. ADMIN sẽ xác nhận sau khi tiền thực tế vào tài khoản.</p>
+    <label>Số tiền muốn nạp (VND)</label>
+    <input id="depositAmount" type="number" min="10000" step="1000" value="50000" oninput="refreshDepositQR()">
+    <div class="wallet-box">
+      <div class="row"><span>Ngân hàng</span><b>MB BANK</b></div>
+      <div class="row"><span>Chủ tài khoản</span><b>${BANK_NAME}</b></div>
+      <div class="row"><span>Số tài khoản</span><b>${BANK_ACCOUNT}</b></div>
+      <div class="row"><span>Nội dung CK</span><b id="depositMemo">${memo}</b></div>
+      <button class="btn small" onclick="copyWalletText('${BANK_ACCOUNT}')">Sao chép STK</button>
+      <button class="btn small" onclick="copyWalletText('${memo}')">Sao chép nội dung</button>
+    </div>
+    <img id="depositQR" class="wallet-qr" alt="QR chuyển khoản MB">
+    <p class="wallet-hint">Không chia sẻ OTP/mật khẩu ngân hàng. Chỉ ADMIN mới có thể duyệt và cộng số dư.</p>
+    <button class="btn primary" style="width:100%" onclick="submitDepositRequest()">TÔI ĐÃ CHUYỂN KHOẢN — GỬI YÊU CẦU</button>
+  `);
+  refreshDepositQR();
+}
+function refreshDepositQR(){
+  const input=$("depositAmount"); const img=$("depositQR"); if(!input||!img)return;
+  const amount=Math.floor(Number(input.value)||0);
+  const memo=walletMemo();
+  img.src="https://img.vietqr.io/image/MB-"+BANK_ACCOUNT+"-compact2.png?amount="+Math.max(0,amount)+"&addInfo="+encodeURIComponent(memo)+"&accountName="+encodeURIComponent(BANK_NAME);
+}
+async function copyWalletText(value){
+  try{await navigator.clipboard.writeText(value);toast("Đã sao chép")}catch(e){toast("Không sao chép được: "+value)}
+}
+async function submitDepositRequest(){
+  if(!user||!sb)return toast("Bạn cần đăng nhập");
+  const amount=Math.floor(Number($("depositAmount")?.value)||0);
+  if(amount<10000)return toast("Số tiền nạp tối thiểu là 10.000 VND");
+  const {error}=await sb.from("deposit_requests").insert({
+    user_id:user.id, amount, transfer_note:walletMemo(), status:"pending"
+  });
+  if(error)return toast("Chưa gửi được yêu cầu: "+error.message);
+  toast("Đã gửi yêu cầu. Chờ ADMIN đối soát.");
+  closeModal();
+  if(isAdmin)loadAdminDeposits();
+}
+async function loadWallet(){
+  if(!sb||!user){currentWalletBalance=0;$("walletBalance").textContent="0 ₫";return}
+  const {data,error}=await sb.from("wallets").select("balance").eq("user_id",user.id).maybeSingle();
+  if(error){$("walletBalance").textContent="—";return}
+  currentWalletBalance=Number(data?.balance||0);
+  $("walletBalance").textContent=money(currentWalletBalance);
+}
+async function loadWalletHistory(){
+  const target=$("walletHistory"); if(!target||!user)return;
+  const {data,error}=await sb.from("wallet_transactions").select("amount,type,note,created_at").eq("user_id",user.id).order("created_at",{ascending:false}).limit(30);
+  target.innerHTML=error?esc(error.message):((data||[]).map(t=>`<div class="row"><span>${esc(t.note||t.type)}<br><small>${new Date(t.created_at).toLocaleString("vi-VN")}</small></span><b>${Number(t.amount)>=0?"+":""}${money(t.amount)}</b></div>`).join("")||"Chưa có giao dịch.");
+}
+async function loadAdminDeposits(){
+  const tbody=$("depositRequests"); if(!tbody)return;
+  if(!isAdmin){tbody.innerHTML='<tr><td colspan="5">Không có quyền ADMIN.</td></tr>';return}
+  const {data,error}=await sb.from("deposit_requests").select("id,user_id,amount,transfer_note,status,created_at").order("created_at",{ascending:false}).limit(100);
+  if(error){tbody.innerHTML=`<tr><td colspan="5">${esc(error.message)}</td></tr>`;return}
+  tbody.innerHTML=(data||[]).map(d=>`<tr><td>${esc(d.user_id)}</td><td>${money(d.amount)}</td><td>${esc(d.transfer_note)}</td><td>${esc(d.status)}</td><td>${d.status==="pending"?`<button class="btn small primary" onclick="approveDeposit('${d.id}')">Duyệt</button> <button class="btn small danger" onclick="rejectDeposit('${d.id}')">Từ chối</button>`:"—"}</td></tr>`).join("")||'<tr><td colspan="5">Chưa có yêu cầu nạp tiền.</td></tr>';
+}
+async function approveDeposit(id){
+  if(!isAdmin||!confirm("Đã kiểm tra tiền thực tế vào tài khoản và muốn cộng số dư?"))return;
+  const {error}=await sb.rpc("approve_wallet_deposit",{p_request_id:id});
+  if(error)return toast("Không duyệt được: "+error.message);
+  toast("Đã duyệt và cộng số dư");await loadAdminDeposits();await loadWallet();
+}
+async function rejectDeposit(id){
+  if(!isAdmin||!confirm("Từ chối yêu cầu nạp tiền này?"))return;
+  const {error}=await sb.rpc("reject_wallet_deposit",{p_request_id:id});
+  if(error)return toast("Không từ chối được: "+error.message);
+  toast("Đã từ chối yêu cầu");loadAdminDeposits();
+}
+
 $("search").oninput=render;$("category").onchange=render;$("sort").onchange=render;$("year").textContent=new Date().getFullYear();
 (async()=>{if(!sb){toast("Không tải được thư viện Supabase");return}sb.auth.onAuthStateChange(()=>setTimeout(authRefresh,0));await authRefresh();await loadProducts()})();
 </script></body></html>
