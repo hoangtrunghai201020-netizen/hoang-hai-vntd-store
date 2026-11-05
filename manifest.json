@@ -1,0 +1,20 @@
+{
+  "name": "HOÀNG HẢI VNTD STORE",
+  "short_name": "VNTD STORE",
+  "description": "Cửa hàng sản phẩm số HOÀNG HẢI VNTD",
+  "lang": "vi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070b12",
+  "theme_color": "#070b12",
+  "icons": [
+    {
+      "src": "./anime-innovacheat.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
