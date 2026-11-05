@@ -326,4 +326,12 @@ async function rejectDeposit(id){
 
 $("search").oninput=render;$("category").onchange=render;$("sort").onchange=render;$("year").textContent=new Date().getFullYear();
 (async()=>{if(!sb){toast("Không tải được thư viện Supabase");return}sb.auth.onAuthStateChange(()=>setTimeout(authRefresh,0));await authRefresh();await loadProducts()})();
-</script></body></html>
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(console.error);
+  });
+}
+</script>
+</body></html>
