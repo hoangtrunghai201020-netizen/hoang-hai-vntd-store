@@ -1,1 +1,133 @@
 
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b16">
+<title>HOÀNG HẢI HQ</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;padding:25px 16px;
+ font-family:Arial,sans-serif;color:white;
+ background:radial-gradient(circle at top,#152b48,#080b16 65%);
+}
+.container{max-width:440px;margin:35px auto}
+.logo{text-align:center;font-size:13px;
+ letter-spacing:5px;color:#65eaff;font-weight:bold}
+h1{text-align:center;font-size:34px;
+ margin:15px 0;color:#fff}
+.subtitle{text-align:center;color:#9cabc1;
+ font-size:13px;line-height:1.7}
+.card{
+ margin-top:30px;padding:25px;
+ border:1px solid #284c68;border-radius:20px;
+ background:#101a2b;
+ box-shadow:0 0 35px #00d9ff15;
+}
+.tag{color:#60eaff;font-size:11px;
+ letter-spacing:2px;font-weight:bold}
+h2{font-size:22px;margin:15px 0}
+p{font-size:13px;color:#a9b9cc;line-height:1.7}
+input{
+ width:100%;padding:16px;margin:12px 0;
+ background:#080f1d;border:1px solid #31516e;
+ border-radius:12px;color:white;
+ outline:none;font-size:14px;
+}
+input:focus{border-color:#5deaff}
+button{
+ width:100%;padding:16px;border:0;
+ border-radius:12px;font-weight:bold;
+ font-size:14px;cursor:pointer;
+ color:#07111d;
+ background:linear-gradient(100deg,#51e7ff,#9d91ff);
+}
+button:active{transform:scale(.98)}
+.secondary{
+ background:#1a2940;color:#d8eaff;
+ border:1px solid #35516d;margin-top:10px;
+}
+.hidden{display:none}
+.message{
+ margin-top:15px;padding:13px;
+ background:#07111d;border-radius:10px;
+ color:#60eaff;font-size:12px;line-height:1.6;
+}
+footer{text-align:center;color:#63758d;
+ font-size:11px;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="logo">✳ HOÀNG HẢI DIGITAL</div>
+<h1>HOÀNG HẢI HQ</h1>
+<div class="subtitle">
+PLAYER PANEL · VERSION 4<br>
+HỆ THỐNG QUẢN LÝ KEY & THIẾT BỊ
+</div>
+
+<div class="card" id="step1">
+<div class="tag">01 / DEVICE</div>
+<h2>NHẬP MÃ MÁY</h2>
+<p>Mở game → tab KEY → COPY MÃ MÁY.</p>
+<input id="device" placeholder="Dán mã máy của bạn">
+<button onclick="nextStep()">TIẾP TỤC ↗</button>
+<p>Chưa có key? Cứ nhập mã máy — bước sau nhập key để kích hoạt.</p>
+</div>
+
+<div class="card hidden" id="step2">
+<div class="tag">02 / ACCESS</div>
+<h2>NHẬP KEY</h2>
+<p>Mã máy của bạn:</p>
+<div class="message" id="deviceShow"></div>
+<input id="key" type="password"
+placeholder="Nhập KEY của bạn">
+<button onclick="activate()">KÍCH HOẠT</button>
+<button class="secondary" onclick="backStep()">QUAY LẠI</button>
+<div id="result"></div>
+</div>
+
+<div class="card">
+<div class="tag">SYSTEM GUIDE</div>
+<h2>HƯỚNG DẪN</h2>
+<p>1. Nhập mã máy được cung cấp bởi ứng dụng của bạn.</p>
+<p>2. Nhập key hợp lệ từ quản trị viên.</p>
+<p>3. Hệ thống cần máy chủ xác thực để kích hoạt thật.</p>
+</div>
+
+<footer>
+© 2026 HOÀNG HẢI HQ<br>
+PLAYER PANEL · V4
+</footer>
+</div>
+
+<script>
+function nextStep(){
+ const device=document.getElementById("device").value.trim();
+ if(!device){
+  alert("Vui lòng nhập mã máy!");
+  return;
+ }
+ document.getElementById("deviceShow").textContent=device;
+ document.getElementById("step1").classList.add("hidden");
+ document.getElementById("step2").classList.remove("hidden");
+}
+function backStep(){
+ document.getElementById("step2").classList.add("hidden");
+ document.getElementById("step1").classList.remove("hidden");
+}
+function activate(){
+ const key=document.getElementById("key").value.trim();
+ if(!key){
+  alert("Vui lòng nhập KEY!");
+  return;
+ }
+ document.getElementById("result").innerHTML=
+ '<div class="message">Đã nhận thông tin. Giao diện chưa kết nối máy chủ xác thực KEY. Vui lòng kết nối backend để kích hoạt thật.</div>';
+}
+</script>
+</body>
+</html>
