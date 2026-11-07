@@ -179,42 +179,85 @@ footer{text-align:center;color:#e7caff;text-shadow:0 0 10px #a855f7}
 @media(max-width:760px){.shop-sections{grid-template-columns:1fr;gap:13px}.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.catalog-panel{padding:10px}.catalog-grid .art{height:120px}}
 @media(min-width:1100px){.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.key-panel .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.acc-panel .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-/* ANIME ART EDGES + SHARP PRODUCT IMAGES */
-.store-banner{position:relative;isolation:isolate;overflow:hidden}
-.store-banner>img{
-  display:block;width:100%;height:clamp(230px,42vw,480px);
-  object-fit:contain;object-position:center;background:#07091b;
-  image-rendering:auto;filter:saturate(1.12) contrast(1.04)
+/* ===== HOÀNG HẢI VNTD — FULL STOREFRONT REDESIGN ===== */
+:root{--cyan:#24e7ff;--purple:#b33cff;--pink:#ff55dd;--gold:#ffe34d}
+body{background:radial-gradient(ellipse at 12% 30%,#082a58 0%,transparent 34%),radial-gradient(ellipse at 88% 30%,#3b0754 0%,transparent 35%),linear-gradient(180deg,#030611,#07051a 62%,#02040d);background-attachment:fixed}
+body:before{opacity:.22;background-size:26px 26px}
+.wrap{width:min(1500px,96%);max-width:1500px}
+.top{background:rgba(3,5,18,.94);border-bottom:1px solid #8c42ff;box-shadow:0 4px 28px #3c00a866}
+.nav{gap:10px;padding:10px 0;min-height:72px}
+.logo{font-size:clamp(14px,2vw,21px);line-height:1.05;color:#fff;text-shadow:0 0 12px #30dfff,0 0 24px #9b36ff}
+.logo small{font-size:9px;letter-spacing:3px;color:#4eeaff}
+.links{gap:7px}
+.links button,.btn{border:1px solid #a33dff;background:linear-gradient(135deg,#101c42,#210d3d);border-radius:13px;box-shadow:inset 0 0 12px #8c36ff35,0 0 12px #712bff55}
+.links button{padding:9px 12px;font-size:12px}
+.links button.active,.links button:hover,.btn:hover{border-color:#38eaff;box-shadow:0 0 10px #18dfff,0 0 25px #8a32ff88;transform:translateY(-1px)}
+.btn.primary{border-color:#25e7ff;background:linear-gradient(110deg,#063a75,#25105b 55%,#720b8a);box-shadow:0 0 12px #16dfff99,inset 0 0 12px #fff2}
+.welcome-card,.kawaii-profile,.category-tabs{display:none!important}
+.hh-hero{height:clamp(280px,31vw,440px);min-height:280px;margin:12px 0 16px;border:1px solid #8b43ff;border-radius:22px;background:radial-gradient(ellipse at 18% 50%,#007cff66,transparent 45%),radial-gradient(ellipse at 82% 50%,#b000ff66,transparent 45%),linear-gradient(110deg,#050b20,#100822 55%,#07071b);box-shadow:0 0 22px #1b9dff88,0 0 42px #a020ff77,inset 0 0 45px #142a7c99}
+.hh-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;opacity:.72;mix-blend-mode:screen}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,#02091bd9 0%,#03091b88 38%,#09051a88 66%,#080419d9 100%);z-index:1}
+.banner-overlay{z-index:2;max-width:100%;width:100%;height:100%;padding:clamp(22px,4vw,54px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;text-shadow:0 3px 12px #000}
+.hero-kicker{font-size:clamp(10px,1.2vw,14px)!important;letter-spacing:3px;color:#79f5ff!important}
+.banner-overlay h1{font-size:clamp(34px,6vw,76px);line-height:.98;margin:12px 0 8px;font-weight:1000;letter-spacing:1px;text-shadow:0 0 12px #17cfff,0 0 28px #643dff}
+.banner-overlay h1 em{color:#ff6bea;text-shadow:0 0 12px #ff40df,0 0 28px #8b35ff}
+.banner-overlay .hero-slogan{font-size:clamp(15px,2.2vw,25px);font-weight:1000;letter-spacing:2px;color:#73eaff;margin:4px 0 14px}
+.hero-benefits{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;color:#fff;font-size:clamp(11px,1.2vw,14px);font-weight:800;margin:0 0 16px}
+.hero-benefits span{padding:5px 10px;border-radius:99px;background:#080d27a8;border:1px solid #6e5aff88}
+.hero-cta{border:1px solid #32eaff;border-radius:99px;padding:12px 28px;color:white;font-weight:1000;font-size:14px;background:linear-gradient(100deg,#063d8b,#4d0d89,#9b0b9b);box-shadow:0 0 15px #1ddfff,0 0 28px #a52aff;cursor:pointer}
+.shop-welcome-line{margin:12px 0 8px;padding:8px 12px;border-left:3px solid #36eaff;background:linear-gradient(90deg,#0c1d45,#190b32);border-radius:8px}
+.shop-welcome-line span{font-weight:1000;color:#fff;letter-spacing:1px}
+.search-row{margin:12px 0}
+.search-row input,.toolbar select{background:#080d20;border:1px solid #4b4caa;color:#fff;box-shadow:0 0 12px #4e24a933}
+.shop-sections{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:18px;margin:18px 0 24px;align-items:stretch}
+.catalog-panel{padding:16px;border-radius:25px;overflow:hidden;isolation:isolate;min-height:280px}
+.catalog-panel:before,.catalog-panel:after{content:"";position:absolute;z-index:-1;top:5%;bottom:5%;width:24%;opacity:.12;pointer-events:none;background:radial-gradient(ellipse,#5ceaff88,transparent 68%);filter:blur(5px)}
+.catalog-panel:before{left:-9%}.catalog-panel:after{right:-9%}
+.key-panel{border:2px solid #1deaff;background:linear-gradient(145deg,#06152df5,#080b20f7 60%,#07152bf5);box-shadow:0 0 14px #12dfff,0 0 35px #1164ff66,inset 0 0 30px #0aaaff22}
+.acc-panel{border:2px solid #e04aff;background:linear-gradient(145deg,#21083bf5,#100821f7 60%,#1a0730f5);box-shadow:0 0 14px #e04aff,0 0 35px #9b22ff66,inset 0 0 30px #dd25ff22}
+.catalog-panel-head{align-items:center;min-height:70px;margin-bottom:14px}
+.catalog-kicker{font-size:10px;letter-spacing:2px;color:#66f0ff}
+.catalog-panel-head h2{font-size:clamp(22px,2.7vw,34px);font-style:italic;font-weight:1000;margin:5px 0;text-shadow:0 0 14px #25dfff}
+.acc-panel .catalog-panel-head h2{color:#fff;text-shadow:0 0 14px #ed40ff}
+.catalog-panel-head p{font-size:12px;color:#e4e0f5}
+.catalog-count{border:1px solid #3ceaff;border-radius:99px;padding:7px 10px;color:#9af5ff;font-size:11px;white-space:nowrap}
+.acc-panel .catalog-count{border-color:#eb55ff;color:#ffc4ff}
+.catalog-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.acc-panel .catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.catalog-grid .card{min-width:0;padding:8px;border-radius:16px;background:linear-gradient(160deg,#0c1b3a,#08091c 70%);border:1px solid #17cfff;box-shadow:0 0 10px #15bfff55;display:flex;flex-direction:column}
+.acc-panel .catalog-grid .card{border-color:#d64aff;box-shadow:0 0 10px #c02aff55;background:linear-gradient(160deg,#26103f,#0b091e 70%)}
+.catalog-grid .art{height:clamp(110px,12vw,165px);border-radius:12px;overflow:hidden;background:radial-gradient(circle,#193a78,#070b1d);border:1px solid #246dff}
+.acc-panel .catalog-grid .art{border-color:#ad39f5}
+.catalog-grid .art img{width:100%;height:100%;display:block;object-fit:contain;object-position:center;padding:4px;filter:drop-shadow(0 0 7px #45cfff77)}
+.acc-panel .catalog-grid .art img{filter:drop-shadow(0 0 7px #e15aff88)}
+.catalog-grid .card h3{font-size:clamp(11px,1vw,14px);line-height:1.25;margin:7px 0;color:#fff;min-height:2.4em}
+.catalog-grid .product-meta{display:flex;flex-wrap:wrap;gap:4px;justify-content:space-between}
+.catalog-grid .tag,.catalog-grid .stock-pill{font-size:9px}
+.catalog-grid .muted{font-size:10px}
+.catalog-grid .price{font-size:clamp(15px,1.4vw,21px);margin:7px 0;color:#ffe83d;text-align:center}
+.catalog-grid .btn{width:100%;font-size:11px;padding:9px 4px;margin-top:auto}
+.empty-catalog{grid-column:1/-1;padding:24px 12px;text-align:center;color:#d8d2ed;border:1px dashed #8263ce;border-radius:14px;font-size:12px;line-height:1.6}
+.hh-trust-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0 12px}
+.hh-trust-strip>div{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid #6d4bcb;border-radius:15px;background:linear-gradient(110deg,#0a1530,#190b2b);box-shadow:0 0 15px #6427bb55}
+.hh-trust-strip b{font-size:25px}.hh-trust-strip strong,.hh-trust-strip small{display:block}.hh-trust-strip strong{font-size:12px;color:#fff}.hh-trust-strip small{font-size:10px;color:#c5bedf;margin-top:3px}
+footer{border-top:1px solid #8b42ff;box-shadow:0 -8px 28px #5014a533}
+@media(max-width:980px){
+ .wrap{width:96%}.nav{align-items:flex-start;flex-direction:column}.links{justify-content:flex-start;width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:5px}.links button{white-space:nowrap}
+ .catalog-grid,.acc-panel .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-.store-banner .banner-overlay{z-index:2}
-.catalog-panel{isolation:isolate}
-.catalog-panel:before,.catalog-panel:after{
-  content:"";position:absolute;z-index:0;top:58px;bottom:12px;width:clamp(54px,10vw,118px);
-  background-image:url("./anime-innovacheat.png");background-repeat:no-repeat;
-  background-size:contain;background-position:center;opacity:.23;pointer-events:none;
-  filter:drop-shadow(0 0 10px currentColor)
-}
-.catalog-panel:before{left:0}
-.catalog-panel:after{right:0;transform:scaleX(-1)}
-.key-panel:before,.key-panel:after{color:#22d3ee}
-.acc-panel:before,.acc-panel:after{color:#e879f9}
-.catalog-panel-head,.catalog-grid{position:relative;z-index:1}
-.catalog-grid .art{height:clamp(118px,15vw,170px);background:radial-gradient(circle,#243a7866,#090b1d)}
-.catalog-grid .art img{
-  display:block;width:100%;height:100%;max-width:100%;max-height:100%;
-  object-fit:contain;object-position:center;padding:4px;
-  image-rendering:auto;filter:drop-shadow(0 0 7px #6ee7ff55)
-}
-.acc-panel .catalog-grid .art img{filter:drop-shadow(0 0 7px #e879f955)}
-.catalog-grid .card{background:linear-gradient(160deg,#111a38f2,#09091cf5)}
-@media(max-width:760px){
-  .store-banner>img{height:clamp(190px,58vw,310px)}
-  .catalog-panel:before,.catalog-panel:after{width:48px;opacity:.18;top:66px}
-  .catalog-grid .art{height:clamp(108px,29vw,142px)}
-}
-@media(prefers-reduced-motion:no-preference){
-  .catalog-panel:before,.catalog-panel:after{animation:edgeGlow 5s ease-in-out infinite alternate}
-  @keyframes edgeGlow{from{opacity:.14;filter:drop-shadow(0 0 5px currentColor)}to{opacity:.30;filter:drop-shadow(0 0 14px currentColor)}}
+@media(max-width:650px){
+ .hh-hero{height:280px;min-height:280px;border-radius:16px}
+ .hh-hero>img{object-position:center;opacity:.45}
+ .hero-shade{background:linear-gradient(90deg,#03091bdc,#08051bd0)}
+ .banner-overlay{padding:16px 10px}.banner-overlay h1{font-size:35px}
+ .hero-benefits{gap:5px;font-size:10px}.hero-benefits span{padding:4px 7px}
+ .hero-cta{font-size:12px;padding:10px 19px}
+ .shop-sections{grid-template-columns:1fr;gap:14px}
+ .catalog-panel{padding:11px;border-radius:18px}
+ .catalog-panel-head h2{font-size:22px}.catalog-panel-head p{font-size:10px}
+ .catalog-grid,.acc-panel .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .catalog-grid .art{height:clamp(112px,32vw,150px)}
+ .hh-trust-strip{grid-template-columns:1fr;gap:8px}
 }
 
 </style>
@@ -224,13 +267,23 @@ footer{text-align:center;color:#e7caff;text-shadow:0 0 10px #a855f7}
 <main class="wrap">
 <section id="shopView" class="store-home"><div class="welcome-card"><div class="eyebrow">✦ CHÀO MỪNG BẠN ĐẾN VỚI ✦</div><h2>HOÀNG HẢI VNTD STORE</h2><p>Cửa hàng sản phẩm số • Mua nhanh • Giao hàng tiện lợi • Hỗ trợ 24/7<br>Chúc bạn có trải nghiệm mua sắm vui vẻ ♡</p></div>
 <div class="store-profile kawaii-profile">
- <div class="profile-left"><div class="hh-avatar"><img src="./anime-innovacheat.png" alt="Ảnh anime Hoàng Hải"><span class="avatar-crown">♛</span></div>
+ <div class="profile-left"><div class="hh-avatar"><img src="anime-profile.png" alt="Ảnh anime Hoàng Hải"><span class="avatar-crown">♛</span></div>
   <div class="profile-name"><div class="crown-name">👑 HOÀNG HẢI 👑</div><b>VNTD STORE</b><small>ID: 8846609260</small><span class="online-dot">● ONLINE 24/7</span></div>
  </div>
  <div class="profile-wallet"><div><small>👛 SỐ DƯ VÍ</small><b class="balance" id="walletBalanceMirror">0 ₫</b></div><button class="btn primary" onclick="openTopup()">💎 NẠP TIỀN</button></div>
 </div>
 <div class="category-tabs"><button class="active" onclick="showCatalogSection('key')">🔑 MUA KEY</button><button onclick="showCatalogSection('acc')">🎮 MUA ACC GAME</button><button onclick="filterCategoryText('CHEAT')">⚡ CHEAT</button><button onclick="toast('Ưu đãi sẽ được cập nhật')">🎁 ƯU ĐÃI</button></div>
-<div class="store-banner"><img src="./anime-innovacheat.png" alt="Anime cute HOÀNG HẢI VNTD STORE" onerror="this.style.display='none'"><div class="banner-overlay"><span>👑 FREE FIRE • STORE 24/7 👑</span><h1>HOÀNG HẢI<br><em>VNTD STORE</em></h1><p>Mua nhanh • Giao tự động • Hỗ trợ 24/7 ♡</p><strong>✦ TỔNG KHO SẢN PHẨM ✦</strong></div></div>
+<div class="store-banner hh-hero">
+ <img src="./anime-innovacheat.png" alt="Ảnh anime HOÀNG HẢI VNTD STORE" onerror="this.style.display='none'">
+ <div class="hero-shade"></div>
+ <div class="banner-overlay">
+  <span class="hero-kicker">👑 DIGITAL STORE • HỖ TRỢ 24/7 👑</span>
+  <h1>HOÀNG HẢI<br><em>VNTD STORE</em></h1>
+  <p class="hero-slogan">SẢN PHẨM SỐ — NHANH • GỌN • TIỆN</p>
+  <div class="hero-benefits"><span>⚡ Hỗ trợ 24/7</span><span>🛡️ Giao dịch an toàn</span><span>🚀 Xử lý nhanh</span></div>
+  <button class="hero-cta" onclick="showCatalogSection('key')">🛒 BẮT ĐẦU MUA SẮM&nbsp; »</button>
+ </div>
+</div>
 <div class="shop-welcome-line"><span>✦ KHO SẢN PHẨM SỐ ✦</span><b>Chọn đúng khu vực bạn cần</b></div>
 <div class="search-row"><input class="field" id="search" placeholder="⌕  Tìm KEY hoặc tài khoản game..."><button class="btn" onclick="document.getElementById('category').focus()">☷ LỌC</button></div>
 <div class="toolbar compact-toolbar"><select class="field" id="category"><option value="">Tất cả danh mục</option></select><select class="field" id="sort"><option value="new">Mới nhất</option><option value="low">Giá thấp → cao</option><option value="high">Giá cao → thấp</option></select></div>
@@ -243,7 +296,11 @@ footer{text-align:center;color:#e7caff;text-shadow:0 0 10px #a855f7}
 <section id="accountView" class="section hidden"><h2>Tài khoản khách hàng</h2><div class="panel"><div id="sessionInfo" class="muted">Chưa đăng nhập</div><div class="formgrid"><div><h3>Đăng ký</h3><div class="formrow"><label>Họ và tên</label><input id="signupFullName" maxlength="100" autocomplete="name" placeholder="Tên khách hàng"></div><div class="formrow"><label>Email</label><input id="signupEmail" type="email" autocomplete="email"></div><div class="formrow"><label>Mật khẩu (ít nhất 8 ký tự)</label><input id="signupPass" type="password" autocomplete="new-password"></div><button class="btn primary" id="signupBtn">Tạo tài khoản</button></div><div><h3>Đăng nhập</h3><div class="formrow"><label>Email</label><input id="loginEmail" type="email" autocomplete="email"></div><div class="formrow"><label>Mật khẩu</label><input id="loginPass" type="password" autocomplete="current-password"></div><button class="btn primary" id="loginBtn">Đăng nhập</button> <button class="btn" id="logoutBtn">Đăng xuất</button></div></div><div id="profileEditor" class="profile-edit hidden"><h3>Thông tin khách hàng</h3><div class="formrow"><label>Họ và tên hiển thị</label><input id="profileFullName" maxlength="100" placeholder="Nhập họ và tên"></div><button class="btn primary" onclick="saveProfileName()">Lưu tên khách hàng</button><p class="muted" id="profileEmail"></p></div></div></section>
 <section id="adminView" class="section hidden"><h2>Quản trị cửa hàng</h2><div class="notice">Chỉ tài khoản được cấp role ADMIN trong bảng profiles mới có quyền quản trị. Không đặt secret/service_role key trong mã HTML.</div><div class="panel"><div class="row"><h3>Thêm / sửa sản phẩm</h3><span class="muted" id="adminStatus">Đang kiểm tra quyền...</span></div><p class="notice">Phân loại khi thêm sản phẩm: danh mục có chữ <b>KEY</b> sẽ vào khu MUA KEY; danh mục có chữ <b>ACC</b> hoặc “Tài khoản” sẽ vào khu MUA ACC GAME. Hai khu vực không hiển thị lẫn nhau.</p><form id="productForm"><input type="hidden" id="editId"><div class="formgrid"><div class="formrow"><label>Tên sản phẩm</label><input id="pName" required maxlength="120"></div><div class="formrow"><label>Danh mục (ghi KEY hoặc ACC GAME)</label><input id="pCategory" required maxlength="60" placeholder="KEY - INNOVA / ACC GAME - FREE FIRE"></div><div class="formrow"><label>Giá (VND)</label><input id="pPrice" type="number" min="0" required></div><div class="formrow"><label>Số lượng tồn kho</label><input id="pStock" type="number" min="0" required></div><div class="formrow"><label>Mã SKU</label><input id="pSku" required maxlength="60"></div><div class="formrow"><label>Ảnh hoặc biểu tượng</label><input id="pIcon" value="✦" maxlength="300"></div></div><div class="formrow"><label>Mô tả</label><textarea id="pDesc" maxlength="1000"></textarea></div><button class="btn primary" type="submit">Lưu sản phẩm</button> <button class="btn" type="button" id="resetProduct">Xóa nội dung</button></form></div><div class="panel"><h3>Kho sản phẩm</h3><div class="tablewrap"><table><thead><tr><th>Sản phẩm / SKU</th><th>Giá</th><th>Tồn</th><th>Thao tác</th></tr></thead><tbody id="inventory"></tbody></table></div></div><div class="panel"><h3>Quản lý kho KEY theo từng gói</h3><p class="muted">Tạo gói bán KEY, đặt giá, rồi dán danh sách KEY thật vào ô NẠP KEY LÊN SHOP. Kho tự đếm KEY chưa bán; mua thành công sẽ tự giao một KEY và trừ kho.</p><div id="keyPackageAdmin"><p class="muted">Đang tải kho KEY...</p></div></div><div class="panel"><h3>Quản lý đơn hàng</h3><div class="tablewrap"><table><thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Tổng</th><th>Trạng thái</th><th>Cập nhật</th></tr></thead><tbody id="allOrders"></tbody></table></div></div><div class="panel"><h3>Yêu cầu nạp tiền</h3><p class="muted">ADMIN kiểm tra tiền đã vào tài khoản trước khi duyệt.</p><div class="tablewrap"><table><thead><tr><th>Khách</th><th>Số tiền</th><th>Nội dung</th><th>Trạng thái</th><th>Duyệt</th></tr></thead><tbody id="depositRequests"><tr><td colspan="5">Đang tải...</td></tr></tbody></table></div></div><div class="panel"><h3>Quản lý đánh giá sản phẩm</h3><p class="muted">ADMIN có thể ẩn hoặc hiện đánh giá.</p><div id="adminReviews">Đang tải đánh giá...</div></div></section>
 <div class="panel"><h3>Thanh toán</h3><p class="muted">Bản hiện tại chỉ ghi nhận đơn chờ thanh toán, chưa thu tiền thật. Tích hợp VNPay/MoMo/ZaloPay cần backend riêng để giữ bí mật khóa và xác minh webhook.</p></div>
-</main><nav class="bottom-nav"><button class="active" data-view="shop"><span>⌂</span>Trang chủ</button><button onclick="openWallet()"><span>💎</span>Ví của tôi</button><button data-view="orders"><span>🛒</span>Đơn hàng</button><button data-view="account"><span>👤</span>Tài khoản</button></nav><footer><div class="wrap">👑 <span id="year"></span> HOÀNG HẢI VNTD STORE 👑<br><small>ID: 8846609260 • STORE 24/7</small></div></footer>
+</main><nav class="bottom-nav"><button class="active" data-view="shop"><span>⌂</span>Trang chủ</button><button onclick="openWallet()"><span>💎</span>Ví của tôi</button><button data-view="orders"><span>🛒</span>Đơn hàng</button><button data-view="account"><span>👤</span>Tài khoản</button></nav><div class="hh-trust-strip">
+ <div><b>⚡</b><span><strong>PHỤC VỤ NHANH</strong><small>Đơn hàng được xử lý sớm</small></span></div>
+ <div><b>⭐</b><span><strong>UY TÍN & MINH BẠCH</strong><small>Thông tin sản phẩm rõ ràng</small></span></div>
+ <div><b>🎧</b><span><strong>HỖ TRỢ 24/7</strong><small>Luôn sẵn sàng hỗ trợ</small></span></div>
+</div><footer><div class="wrap">👑 <span id="year"></span> HOÀNG HẢI VNTD STORE 👑<br><small>ID: 8846609260 • STORE 24/7</small></div></footer>
 <div class="modalbg" id="modalBg"><div class="modal"><div class="modalhead"><h3 id="modalTitle">Giỏ hàng</h3><button class="btn small" id="modalClose">Đóng ✕</button></div><div id="modalBody"></div></div></div><div class="toast" id="toast"></div>
 <script>
 /* Supabase URL và publishable/anon key công khai; không dùng secret/service_role key tại đây. */
@@ -253,7 +310,7 @@ const sb=window.supabase?.createClient?window.supabase.createClient(SUPABASE_URL
 let products=[],cart=[],user=null,isAdmin=false,currentProfileName="";
 const $=id=>document.getElementById(id),money=n=>new Intl.NumberFormat("vi-VN").format(Number(n)||0)+"₫";
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function showProductIcon(value){const v=String(value||"✦").trim();if(/\.(png|jpg|jpeg|webp|gif)(\?.*)?$/i.test(v))return `<img src="${esc(v)}" alt="Ảnh sản phẩm" loading="lazy" decoding="async">`;return esc(v)}
+function showProductIcon(value){const v=String(value||"✦").trim();if(/\.(png|jpg|jpeg|webp|gif)(\?.*)?$/i.test(v))return `<img src="${esc(v)}" alt="Ảnh sản phẩm">`;return esc(v)}
 function toast(s){$("toast").textContent=s;$("toast").classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2600)}
 function modal(title,html){$("modalTitle").textContent=title;$("modalBody").innerHTML=html;$("modalBg").classList.add("show")}
 function closeModal(){$("modalBg").classList.remove("show")}
@@ -286,10 +343,10 @@ async function setReviewHidden(id,hidden){if(!isAdmin)return;const {error}=await
 async function saveProfileName(){if(!user)return toast('Bạn cần đăng nhập');const full_name=$('profileFullName').value.trim();if(full_name.length<2)return toast('Họ tên phải có ít nhất 2 ký tự');const {error}=await sb.rpc('set_my_profile_name',{p_full_name:full_name});if(error)return toast('Không lưu được tên: '+error.message);currentProfileName=full_name;toast('Đã cập nhật họ tên');await authRefresh()}
 
 async function openProductDetail(id){const p=products.find(x=>String(x.id)===String(id));if(!p)return;detailProduct=p;detailPackage=0;if(isKeyProduct(p)){const {data,error}=await sb.from("key_packages").select("*").eq("product_id",p.id).order("sort_order",{ascending:true}).order("created_at",{ascending:true});if(error)return toast("Không tải được các gói KEY: "+error.message);detailPackageRows=data||[]}else detailPackageRows=[];
-if(!isKeyProduct(p)){modal(p.name,`<div class="detail-hero"><img src="./anime-innovacheat.png" alt="Anime cute gaming"><div style="padding:15px"><h2>${esc(p.name)}</h2><p>${esc(p.description||"")}</p><p class="price">${money(p.price)}</p><p>KHO: ${Number(p.stock)||0}</p></div></div><p class="muted">Sản phẩm này không dùng kho KEY theo thời hạn.</p><div id="productReviews"></div>`);$('productReviews').innerHTML=await renderProductReviews(p.id);return}
-if(!detailPackageRows.length){modal(p.name,`<div class="detail-hero"><img src="./anime-innovacheat.png" alt="Anime cute gaming"><div style="padding:15px"><div class="eyebrow">FREE FIRE • KHO KEY RIÊNG</div><h2>${esc(p.name)}</h2><p class="muted">${esc(p.description||"Quản trị viên chưa thêm gói KEY cho sản phẩm này.")}</p></div></div><p class="notice">Chưa có gói KEY. Vui lòng quay lại sau khi quản trị viên thêm gói trong ADMIN.</p>`);return}
+if(!isKeyProduct(p)){modal(p.name,`<div class="detail-hero"><img src="anime-banner.png" alt="Anime cute gaming"><div style="padding:15px"><h2>${esc(p.name)}</h2><p>${esc(p.description||"")}</p><p class="price">${money(p.price)}</p><p>KHO: ${Number(p.stock)||0}</p></div></div><p class="muted">Sản phẩm này không dùng kho KEY theo thời hạn.</p><div id="productReviews"></div>`);$('productReviews').innerHTML=await renderProductReviews(p.id);return}
+if(!detailPackageRows.length){modal(p.name,`<div class="detail-hero"><img src="anime-banner.png" alt="Anime cute gaming"><div style="padding:15px"><div class="eyebrow">FREE FIRE • KHO KEY RIÊNG</div><h2>${esc(p.name)}</h2><p class="muted">${esc(p.description||"Quản trị viên chưa thêm gói KEY cho sản phẩm này.")}</p></div></div><p class="notice">Chưa có gói KEY. Vui lòng quay lại sau khi quản trị viên thêm gói trong ADMIN.</p>`);return}
 const total=detailPackageRows.reduce((n,g)=>n+(g.enabled&&Number(g.stock)>0?Number(g.stock):0),0);const packageHtml=detailPackageRows.map((g,i)=>{const available=!!g.enabled&&Number(g.stock)>0;return `<button class="package-option ${i===0?'selected':''} ${available?'':'out'}" id="detailPack${i}" ${available?'':'disabled'} onclick="chooseDetailPackage(${i})"><small>${available?'KHO: '+Number(g.stock):'HẾT HÀNG'}</small><b>${esc(g.name)}</b><strong>${money(g.price)}</strong></button>`}).join('');const first=detailPackageRows.findIndex(g=>g.enabled&&Number(g.stock)>0);detailPackage=first>=0?first:0;
-modal(p.name,`<div class="detail-hero"><img src="./anime-innovacheat.png" alt="Anime cute gaming"><div style="padding:15px"><div class="eyebrow">FREE FIRE • TỔNG KHO ${total}</div><h2 style="margin:8px 0">${esc(p.name)}</h2><p class="muted">${esc(p.description||'Chọn gói thời hạn bên dưới.')}</p><b style="color:#69eaff">CHỌN GÓI THỜI HẠN SỬ DỤNG</b></div></div><div class="package-grid">${packageHtml}</div><div class="wallet-box"><div class="row"><span>SỐ DƯ VÍ</span><b class="wallet-amount" id="detailWalletBalance" style="font-size:22px">${money(currentWalletBalance)}</b></div><button class="btn" onclick="openTopup()">＋ NẠP THÊM</button></div><div class="row" style="margin:12px 0"><span>Gói đang chọn</span><b id="detailChosenPackage">${first>=0?esc(detailPackageRows[first].name):'Chưa có gói còn hàng'}</b></div><div class="row"><span>Giá thanh toán</span><b class="price" id="detailChosenPrice">${first>=0?money(detailPackageRows[first].price):'—'}</b></div><button class="btn primary full-btn" id="buyKeyNow" onclick="buySelectedKey()" ${first<0?'disabled':''}>💎 MUA NGAY BẰNG VÍ</button><p class="wallet-hint">Sau khi thanh toán bằng ví, hệ thống tự lấy 1 KEY chưa bán trong kho, giao ngay vào đơn hàng và trừ tồn kho.</p><p class="wallet-hint">Gói hết hàng vẫn được hiển thị nhưng không thể chọn mua.</p><div id="productReviews"></div>`);
+modal(p.name,`<div class="detail-hero"><img src="anime-banner.png" alt="Anime cute gaming"><div style="padding:15px"><div class="eyebrow">FREE FIRE • TỔNG KHO ${total}</div><h2 style="margin:8px 0">${esc(p.name)}</h2><p class="muted">${esc(p.description||'Chọn gói thời hạn bên dưới.')}</p><b style="color:#69eaff">CHỌN GÓI THỜI HẠN SỬ DỤNG</b></div></div><div class="package-grid">${packageHtml}</div><div class="wallet-box"><div class="row"><span>SỐ DƯ VÍ</span><b class="wallet-amount" id="detailWalletBalance" style="font-size:22px">${money(currentWalletBalance)}</b></div><button class="btn" onclick="openTopup()">＋ NẠP THÊM</button></div><div class="row" style="margin:12px 0"><span>Gói đang chọn</span><b id="detailChosenPackage">${first>=0?esc(detailPackageRows[first].name):'Chưa có gói còn hàng'}</b></div><div class="row"><span>Giá thanh toán</span><b class="price" id="detailChosenPrice">${first>=0?money(detailPackageRows[first].price):'—'}</b></div><button class="btn primary full-btn" id="buyKeyNow" onclick="buySelectedKey()" ${first<0?'disabled':''}>💎 MUA NGAY BẰNG VÍ</button><p class="wallet-hint">Sau khi thanh toán bằng ví, hệ thống tự lấy 1 KEY chưa bán trong kho, giao ngay vào đơn hàng và trừ tồn kho.</p><p class="wallet-hint">Gói hết hàng vẫn được hiển thị nhưng không thể chọn mua.</p><div id="productReviews"></div>`);
 $("productReviews").innerHTML=await renderProductReviews(p.id);
 if(first>=0)chooseDetailPackage(first);else{$('modalBody').insertAdjacentHTML('beforeend','<p class="soldout-label">TẤT CẢ GÓI ĐANG HẾT HÀNG</p>')}}
 function chooseDetailPackage(i){const p=detailPackageRows[i];if(!p||!p.enabled||Number(p.stock)<1)return;detailPackage=i;detailPackageRows.forEach((g,n)=>{const el=$('detailPack'+n);if(el)el.classList.toggle('selected',n===i)});const name=$('detailChosenPackage'),price=$('detailChosenPrice'),btn=$('buyKeyNow');if(name)name.textContent=p.name;if(price)price.textContent=money(p.price);if(btn)btn.disabled=false;}
