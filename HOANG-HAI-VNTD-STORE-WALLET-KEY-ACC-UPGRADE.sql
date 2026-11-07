@@ -452,7 +452,7 @@ declare v_package uuid; v_inserted integer;
 begin
   if not public.hhvntd_is_admin() then raise exception 'Chỉ ADMIN được nạp ACC CLONE'; end if;
   if length(trim(coalesce(p_name,'')))=0 or p_price<=0 then raise exception 'Tên gói hoặc giá bán không hợp lệ'; end if;
-  if jsonb_typeof(p_accounts)<>'array' or jsonb_array_length(p_accounts)=0 then raise exception 'Danh sách ACC trống'; end if;
+  if p_accounts is null or jsonb_typeof(p_accounts)<>'array' then raise exception 'Danh sách ACC không hợp lệ'; end if;
   insert into public.acc_clone_packages(name,price) values(trim(p_name),p_price) returning id into v_package;
   insert into public.acc_clone_inventory(package_id,login,password)
   select v_package,trim(x->>'login'),x->>'password'
@@ -470,6 +470,7 @@ begin
   if v_uid is null then raise exception 'Vui lòng đăng nhập'; end if;
   select * into v_pkg from public.acc_clone_packages where id=p_package_id and enabled=true for update;
   if not found then raise exception 'Gói ACC không tồn tại hoặc đã tạm ngừng'; end if;
+  if v_pkg.price is null or v_pkg.price <= 0 then raise exception 'Giá gói ACC chưa hợp lệ'; end if;
   select * into v_acc from public.acc_clone_inventory where package_id=p_package_id and status='available' order by created_at,id limit 1 for update skip locked;
   if not found then raise exception 'Gói ACC đã hết hàng'; end if;
   insert into public.wallets(user_id,balance) values(v_uid,0) on conflict(user_id) do nothing;
@@ -580,8 +581,8 @@ begin
     if v_product.stock < v_row.quantity then
       raise exception 'Sản phẩm "%" không đủ tồn kho', v_product.name;
     end if;
-    if v_product.price < 0 then
-      raise exception 'Giá sản phẩm không hợp lệ';
+    if v_product.price is null or v_product.price <= 0 then
+      raise exception 'Giá sản phẩm không hợp lệ hoặc đang bằng 0';
     end if;
 
     v_total := v_total + (v_product.price * v_row.quantity);
@@ -792,3 +793,87 @@ grant insert,update,delete on public.key_packages to authenticated;
 grant select,insert,update,delete on public.key_inventory to authenticated;
 notify pgrst,'reload schema';
 -- ===================== END FIX: PROFILE NAME + PRODUCT REVIEWS =====================
+
+
+-- ===================== KIỂM TRA SAU NÂNG CẤP =====================
+-- Các truy vấn chỉ đọc, có thể chạy riêng sau khi toàn bộ SQL phía trên báo Success.
+-- 1) Xác nhận các hàm thanh toán tồn tại:
+select p.proname as purchase_function, pg_get_function_identity_arguments(p.oid) as arguments
+from pg_proc p join pg_namespace n on n.oid=p.pronamespace
+where n.nspname='public' and p.proname in (
+  'checkout_with_wallet','buy_key_package_with_wallet','buy_acc_clone_with_wallet',
+  'approve_wallet_deposit','reject_wallet_deposit'
+) order by p.proname;
+
+-- 2) Kiểm tra ví âm (kết quả đúng phải là 0 dòng):
+select user_id,balance from public.wallets where balance < 0;
+
+-- 3) Kiểm tra số tồn KEY/ACC so với kho thật:
+select kp.id,kp.name,kp.stock,
+  (select count(*) from public.key_inventory ki where ki.package_id=kp.id and ki.status='available') as actual_stock
+from public.key_packages kp order by kp.created_at desc;
+select ap.id,ap.name,ap.stock,
+  (select count(*) from public.acc_clone_inventory ai where ai.package_id=ap.id and ai.status='available') as actual_stock
+from public.acc_clone_packages ap order by ap.created_at desc;
+-- Không tự chạy giao dịch thử hoặc tự cộng/trừ tiền trong các câu kiểm tra này.
+-- ===================== END KIỂM TRA SAU NÂNG CẤP =====================
+
+
+-- ===================== ACC CLONE BULK RESTOCK =====================
+-- Create package once, then add many accounts to that existing package.
+create or replace function public.admin_add_acc_clone_inventory(p_package_id uuid,p_accounts jsonb)
+returns jsonb
+language plpgsql
+security definer
+set search_path=public,pg_temp
+as $$
+declare
+  v_inserted integer := 0;
+  v_submitted integer := 0;
+begin
+  if not public.hhvntd_is_admin() then raise exception 'Chỉ ADMIN được nạp ACC CLONE'; end if;
+  if p_package_id is null or not exists(select 1 from public.acc_clone_packages where id=p_package_id) then
+    raise exception 'Không tìm thấy gói ACC CLONE';
+  end if;
+  if p_accounts is null or jsonb_typeof(p_accounts)<>'array' or jsonb_array_length(p_accounts)<1 or jsonb_array_length(p_accounts)>2000 then
+    raise exception 'Danh sách ACC phải có từ 1 đến 2000 dòng';
+  end if;
+  if exists(
+    select 1 from jsonb_array_elements(p_accounts) a
+    where jsonb_typeof(a)<>'object'
+       or length(trim(coalesce(a->>'login','')))=0
+       or length(coalesce(a->>'password',''))=0
+       or length(trim(coalesce(a->>'login','')))>320
+       or length(coalesce(a->>'password',''))>2000
+  ) then raise exception 'Có dòng ACC sai định dạng hoặc quá dài'; end if;
+  select count(*)::integer into v_submitted from jsonb_array_elements(p_accounts);
+  insert into public.acc_clone_inventory(package_id,login,password)
+  select p_package_id,trim(a->>'login'),a->>'password'
+  from jsonb_array_elements(p_accounts) a
+  on conflict(login_key) do nothing;
+  get diagnostics v_inserted=row_count;
+  update public.acc_clone_packages p
+    set stock=(select count(*)::integer from public.acc_clone_inventory i where i.package_id=p.id and i.status='available'),updated_at=now()
+    where p.id=p_package_id;
+  return jsonb_build_object('inserted',v_inserted,'skipped',v_submitted-v_inserted,'submitted',v_submitted);
+end;
+$$;
+revoke all on function public.admin_add_acc_clone_inventory(uuid,jsonb) from public;
+grant execute on function public.admin_add_acc_clone_inventory(uuid,jsonb) to authenticated;
+notify pgrst,'reload schema';
+-- ===================== END ACC CLONE BULK RESTOCK =====================
+
+
+-- Create an empty ACC package once; bulk inventory is added with admin_add_acc_clone_inventory.
+create or replace function public.admin_create_empty_acc_clone_package(p_name text,p_price bigint)
+returns uuid language plpgsql security definer set search_path=public,pg_temp as $$
+declare v_id uuid;
+begin
+  if not public.hhvntd_is_admin() then raise exception 'Chỉ ADMIN được tạo gói ACC CLONE'; end if;
+  if length(trim(coalesce(p_name,'')))<2 or length(trim(p_name))>120 or p_price is null or p_price<1 then raise exception 'Tên gói hoặc giá bán không hợp lệ'; end if;
+  insert into public.acc_clone_packages(name,price,stock,enabled) values(trim(p_name),p_price,0,true) returning id into v_id;
+  return v_id;
+end; $$;
+revoke all on function public.admin_create_empty_acc_clone_package(text,bigint) from public;
+grant execute on function public.admin_create_empty_acc_clone_package(text,bigint) to authenticated;
+notify pgrst,'reload schema';
