@@ -362,25 +362,48 @@ function setHHSplash(progress,status,activeStep){
   if(bar)bar.style.width=n+'%';if(pct)pct.textContent=n+'%';if(label)label.textContent=status;
   for(let i=1;i<=5;i++){const el=$('hhStep'+i);if(!el)continue;el.classList.toggle('done',i<activeStep||(n===100&&i===5));el.classList.toggle('active',i===activeStep&&n<100);const dot=el.querySelector('.dot');if(dot)dot.textContent=(i<activeStep||(n===100&&i===5))?'✓':String(i)}
 }
-function hideHHSplash(){if(hhSplashDone)return;hhSplashDone=true;$('hhSplash')?.classList.add('hide');let seen=false;try{seen=localStorage.getItem('hhWelcomeSeen')==='1'}catch(e){}if(!seen){modal('Chào mừng đến HOÀNG HẢI VNTD STORE',`<div class="welcome-card"><div style="font-size:34px">👑 ✨ ♡</div><h2>HOÀNG HẢI VNTD STORE</h2><p>Mua sắm sản phẩm số nhanh chóng, tiện lợi.<br>Hỗ trợ khách hàng 24/7.<br>Chúc bạn có trải nghiệm tuyệt vời!</p><button class="btn primary" onclick="closeWelcome()">BẮT ĐẦU MUA SẮM</button></div>`)} }
+function hideHHSplash(){if(hhSplashDone)return;hhSplashDone=true;$('hhSplash')?.classList.add('hide');modal('Chào mừng đến HOÀNG HẢI VNTD STORE',`<div class="welcome-card"><div style="font-size:34px">👑 ✨ ♡</div><h2>HOÀNG HẢI<br>VNTD STORE</h2><p>HOÀNG HẢI VNTD STORE<br>Mua sắm sản phẩm số nhanh chóng, tiện lợi.<br>Hỗ trợ khách hàng 24/7.<br>Chúc bạn có trải nghiệm tuyệt vời!</p><button class="btn primary" onclick="closeWelcome()">BẮT ĐẦU MUA SẮM</button></div>`)}
 function showHHSplashError(message){const e=$('hhSplashError'),b=$('hhSplashContinue');if(e){e.textContent=message;e.style.display='block'}if(b)b.style.display='block';$('hhSplashStatus').textContent='CHƯA THỂ KẾT NỐI ĐẦY ĐỦ';}
 (async()=>{
-  setHHSplash(8,'Tải giao diện và tài nguyên...',1);
+  setHHSplash(1,'ĐANG KHỞI ĐỘNG CỬA HÀNG...',1);
   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-  setHHSplash(20,'Kiểm tra kết nối Supabase...',2);
-  if(!sb){showHHSplashError('Không tải được thư viện Supabase. Kiểm tra kết nối mạng rồi tải lại trang.');return}
+  setHHSplash(12,'Đã tải giao diện cửa hàng...',1);
+  if(!sb){showHHSplashError('Không tải được thư viện Supabase. Bạn vẫn có thể vào cửa hàng và thử tải lại khi có mạng.');return}
   try{
     sb.auth.onAuthStateChange(()=>setTimeout(authRefresh,0));
-    setHHSplash(35,'Đang kiểm tra tài khoản và số dư ví...',3);
-    await authRefresh();
-    setHHSplash(62,'Đang tải danh sách sản phẩm và kho KEY...',4);
-    await loadProducts();
-    setHHSplash(90,'Đang hoàn tất giao diện cửa hàng...',5);
-    if(document.fonts?.ready)await document.fonts.ready;
+    setHHSplash(25,'Đang kết nối cơ sở dữ liệu...',2);
+
+    // Chạy kiểm tra tài khoản/ví và tải sản phẩm song song để rút ngắn thời gian chờ.
+    const startupTasks=Promise.all([
+      (async()=>{setHHSplash(42,'Đang kiểm tra tài khoản và số dư ví...',3);await authRefresh()})(),
+      (async()=>{setHHSplash(58,'Đang tải sản phẩm và kho KEY...',4);await loadProducts()})()
+    ]);
+
+    // Không để màn hình chờ treo vô hạn nếu mạng/Supabase phản hồi chậm.
+    const completed=await Promise.race([
+      startupTasks.then(()=>true),
+      new Promise(resolve=>setTimeout(()=>resolve(false),7000))
+    ]);
+
+    if(!completed){
+      setHHSplash(90,'Kết nối đang chậm — cửa hàng vẫn có thể mở...',5);
+      showHHSplashError('Máy chủ phản hồi chậm. Bạn có thể vào cửa hàng ngay; dữ liệu sẽ tiếp tục tải khi kết nối hoàn tất.');
+      return;
+    }
+
+    setHHSplash(94,'Đang hoàn tất giao diện cửa hàng...',5);
+    await Promise.race([
+      document.fonts?.ready || Promise.resolve(),
+      new Promise(resolve=>setTimeout(resolve,700))
+    ]);
     await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
     setHHSplash(100,'CỬA HÀNG ĐÃ SẴN SÀNG!',5);
     setTimeout(hideHHSplash,350);
-  }catch(error){console.error('HH startup:',error);showHHSplashError('Khởi động chưa hoàn tất: '+(error?.message||'Lỗi kết nối')+'. Bạn có thể thử tải lại trang.');}
+  }catch(error){
+    console.error('HH startup:',error);
+    setHHSplash(90,'Khởi động chưa hoàn tất...',5);
+    showHHSplashError('Một phần dữ liệu chưa tải được: '+(error?.message||'Lỗi kết nối')+'. Bạn vẫn có thể vào cửa hàng.');
+  }
 })();
 function closeWelcome(){try{localStorage.setItem('hhWelcomeSeen','1')}catch(e){}closeModal()}
 </script></body></html>
