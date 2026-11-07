@@ -250,6 +250,7 @@ body:before{animation:hh-bg-drift 22s ease-in-out infinite alternate}
 @keyframes hh-logo-glow{to{text-shadow:0 0 12px #36eaff,0 0 30px #ec55da}}
 /* Ambient particles are decorative and never block taps */
 #hhAmbientFx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;contain:strict}
+.wrap,footer{position:relative;z-index:1}.top{z-index:5}#hhSplash{z-index:100}
 #hhAmbientFx i{position:absolute;bottom:-24px;width:3px;height:3px;border-radius:50%;background:#80f5ff;box-shadow:0 0 8px 3px #38dfff88;animation:hh-particle-rise var(--dur,12s) linear infinite;left:var(--x,50%);opacity:0}
 @keyframes hh-particle-rise{0%{transform:translate3d(0,0,0) scale(.5);opacity:0}12%{opacity:.8}85%{opacity:.55}100%{transform:translate3d(var(--drift,30px),-110vh,0) scale(1.6);opacity:0}}
 @media(hover:hover) and (pointer:fine){.card:hover,.acc-clone-card:hover{transform:perspective(900px) rotateX(2deg) rotateY(-2deg) translateY(-5px)}}
@@ -277,6 +278,32 @@ body:before{animation:hh-bg-drift 22s ease-in-out infinite alternate}
 #hhAmbientFx i{position:absolute;left:var(--x);bottom:-12px;width:3px;height:3px;border-radius:50%;background:#9cefff;box-shadow:0 0 9px #8beeff,0 0 18px #bd65ff;opacity:.75;animation:hhFloat var(--dur) linear infinite}
 @keyframes hhFloat{0%{transform:translate3d(0,0,0) scale(.6);opacity:0}12%{opacity:.8}88%{opacity:.65}100%{transform:translate3d(var(--drift),-110vh,0) scale(1.5);opacity:0}}
 @media(prefers-reduced-motion:reduce){.hero,.store-banner,.store-profile,.catalog-panel,.trust-panel,.wallet-box,.detail-hero,.card,#hhAmbientFx i{animation:none!important}.card:hover{transform:none}}
+
+
+.hh-splash-art{background-image:linear-gradient(0deg,#08091be8 0%,transparent 45%),url("./anime-innovacheat-v2.png")!important;background-size:cover;background-position:center 35%}
+/* COSMIC ANIME UPGRADE: galaxy, stars and fireflies — no spinning rainbow rings */
+body{background-color:#030611;background-image:radial-gradient(ellipse at 18% 8%,#33206b88 0,transparent 36%),radial-gradient(ellipse at 82% 28%,#123c7180 0,transparent 38%),radial-gradient(ellipse at 55% 85%,#35104d66 0,transparent 42%),linear-gradient(180deg,#050817,#07091b 55%,#03040b);background-attachment:fixed}
+body:before{background-image:radial-gradient(1px 1px at 20% 30%,#fff 99%,transparent),radial-gradient(1px 1px at 70% 65%,#bdeaff 99%,transparent),radial-gradient(2px 2px at 40% 80%,#d8b4fe 99%,transparent);background-size:180px 180px,240px 240px,310px 310px;opacity:.25;z-index:0}
+body:after{content:"";display:none}
+#hhAmbientFx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;contain:strict}
+.wrap,footer{position:relative;z-index:1}.top{z-index:5}#hhSplash{z-index:100}
+#hhAmbientFx i{position:absolute;display:block;pointer-events:none}
+#hhAmbientFx .hh-star{left:var(--x);top:var(--y);width:2px;height:2px;border-radius:50%;background:#eafaff;box-shadow:0 0 5px 1px #9beaffaa;opacity:.25;animation:hhStarTwinkle var(--dur) ease-in-out var(--delay) infinite alternate}
+#hhAmbientFx .hh-firefly{left:var(--x);top:var(--y);width:4px;height:4px;border-radius:50%;background:#b9fff1;box-shadow:0 0 7px 2px #6affd988,0 0 17px 5px #54cfff55;opacity:0;animation:hhFirefly var(--dur) ease-in-out var(--delay) infinite}
+#hhAmbientFx .hh-shooting{left:var(--x);top:var(--y);width:70px;height:1px;background:linear-gradient(90deg,transparent,#bdeaff,transparent);filter:drop-shadow(0 0 4px #8beaff);opacity:0;transform:rotate(-35deg);animation:hhShooting 13s linear var(--delay) infinite}
+@keyframes hhStarTwinkle{0%{opacity:.18;transform:scale(.7)}100%{opacity:1;transform:scale(1.7)}}
+@keyframes hhFirefly{0%,100%{opacity:0;transform:translate3d(0,0,0) scale(.55)}25%{opacity:.95}55%{opacity:.45;transform:translate3d(var(--drift),-22px,0) scale(1.4)}80%{opacity:.9;transform:translate3d(calc(var(--drift)*-.5),18px,0) scale(.8)}}
+@keyframes hhShooting{0%,82%{opacity:0;transform:translate3d(0,0,0) rotate(-35deg)}84%{opacity:1}91%{opacity:0;transform:translate3d(-180px,120px,0) rotate(-35deg)}100%{opacity:0}}
+/* Static violet/cyan frame lighting: no rainbow rotation */
+.hh-welcome-art-frame{background:linear-gradient(135deg,#42dfff,#8055ef 52%,#d879ff);animation:none!important;box-shadow:0 0 18px #22d3ee55,0 0 35px #8b5cf655}
+.hh-welcome-art-frame:before,.welcome-card:before,.store-profile:before,.store-banner:before,.card:before,.acc-clone-card:before,.owned-key-card:before,.hh-splash-card:before,.trust-board:before{background:linear-gradient(135deg,#22d3ee,#7557e8 55%,#d879ff)!important;animation:none!important;filter:none!important}
+.hh-welcome-art-frame:after{animation:none!important;box-shadow:inset 0 0 18px #22d3ee44,0 0 10px #a855f766}
+.hero{perspective:1200px;transform-style:preserve-3d;box-shadow:0 18px 55px #05030f,0 0 30px #7557e855}
+.hero-art{transform:translateZ(0);animation:hhAnimeFloat 9s ease-in-out infinite alternate;filter:saturate(1.12) contrast(1.04)}
+@keyframes hhAnimeFloat{0%{transform:scale(1.015) translateY(2px);filter:saturate(1.05) drop-shadow(0 0 0 #8b5cf6)}100%{transform:scale(1.045) translateY(-5px);filter:saturate(1.2) drop-shadow(0 8px 18px #7c3aed55)}}
+.hero,.store-banner,.store-profile,.catalog-panel,.trust-panel,.wallet-box,.detail-hero,.card{animation:none!important;border-color:#7357b5aa;box-shadow:0 0 0 1px #22d3ee12,0 8px 28px #02030b99}
+.trust-board{border-color:#55dfff88;box-shadow:0 0 24px #22d3ee22,0 0 38px #8055ef22}
+@media(prefers-reduced-motion:reduce){#hhAmbientFx i,.hero-art{animation:none!important}}
 
 </style>
 </head>
@@ -649,7 +676,7 @@ function setHHSplash(progress,status,activeStep){
 }
 function hideHHSplash(){if(hhSplashDone)return;hhSplashDone=true;$('hhSplash')?.classList.add('hide');let seen=false;try{seen=localStorage.getItem('hhWelcomeSeen')==='1'}catch(e){}if(seen)return;try{localStorage.setItem('hhWelcomeSeen','1')}catch(e){}modal('Chào mừng đến HOÀNG HẢI VNTD STORE',`<div class="welcome-card" style="position:relative;overflow:hidden;padding:0;background:#090b20"><button aria-label="Đóng" onclick="closeWelcome()" style="position:absolute;right:10px;top:10px;z-index:3;border:1px solid #fff8;background:#080817dd;color:white;border-radius:999px;padding:8px 12px">Đóng　✕</button><div class="hh-welcome-art-frame"><img src="./hh-welcome-neon.png" alt="Giao diện neon HOÀNG HẢI VNTD STORE" onerror="this.onerror=null;this.src='./anime-innovacheat-v2.png'"></div><div style="padding:18px"><div style="font-size:25px">👑 ✨ ♡</div><h2>HOÀNG HẢI<br>VNTD STORE</h2><p>Mua sắm sản phẩm số nhanh chóng, tiện lợi.<br>Hỗ trợ khách hàng 24/7.<br>Chúc bạn có trải nghiệm tuyệt vời!</p><button class="btn primary full-btn" onclick="closeWelcome()">BẮT ĐẦU MUA SẮM</button></div></div>`)}
 function showHHSplashError(message){const e=$('hhSplashError'),b=$('hhSplashContinue');if(e){e.textContent=message;e.style.display='block'}if(b)b.style.display='block';$('hhSplashStatus').textContent='CHƯA THỂ KẾT NỐI ĐẦY ĐỦ';}
-function initHHAmbientFx(){if(document.getElementById('hhAmbientFx'))return;const layer=document.createElement('div');layer.id='hhAmbientFx';for(let i=0;i<26;i++){const p=document.createElement('i');p.style.setProperty('--x',(Math.random()*100).toFixed(2)+'%');p.style.setProperty('--dur',(9+Math.random()*13).toFixed(2)+'s');p.style.setProperty('--drift',((Math.random()-.5)*150).toFixed(0)+'px');p.style.animationDelay=(-Math.random()*18).toFixed(2)+'s';layer.appendChild(p)}document.body.prepend(layer)}
+function initHHAmbientFx(){if(document.getElementById('hhAmbientFx'))return;const layer=document.createElement('div');layer.id='hhAmbientFx';for(let i=0;i<64;i++){const p=document.createElement('i');p.className=i<38?'hh-star':(i<59?'hh-firefly':'hh-shooting');p.style.setProperty('--x',(Math.random()*100).toFixed(2)+'%');p.style.setProperty('--y',(Math.random()*100).toFixed(2)+'%');p.style.setProperty('--dur',(i<38?2+Math.random()*5:7+Math.random()*10).toFixed(2)+'s');p.style.setProperty('--delay',(-Math.random()*16).toFixed(2)+'s');p.style.setProperty('--drift',((Math.random()-.5)*90).toFixed(0)+'px');layer.appendChild(p)}document.body.prepend(layer)}
 initHHAmbientFx();
 (async()=>{
   setHHSplash(1,'ĐANG KHỞI ĐỘNG CỬA HÀNG...',1);
