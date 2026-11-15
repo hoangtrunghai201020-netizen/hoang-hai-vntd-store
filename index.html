@@ -328,6 +328,33 @@ button:after,.btn:after{background:linear-gradient(125deg,#69dfff,#5369c9 38%,#a
 .bottom-nav{border-color:#648bc7!important;box-shadow:0 0 15px #376cae55,0 0 28px #7545ad33!important}
 @media(prefers-reduced-motion:reduce){.welcome-card:before,.store-profile:before,.store-banner:before,.card:before,.acc-clone-card:before,.owned-key-card:before,.hh-splash-card:before,.trust-board:before,.hh-welcome-art-frame:before{animation:none!important}}
 
+
+/* HOÀNG HẢI VNTD — selected portrait for banner + full-page background */
+body{
+  background-color:#050611!important;
+  background-image:linear-gradient(180deg,rgba(5,6,17,.84),rgba(5,6,17,.92)),url("./girl-shop.jpg")!important;
+  background-position:center top!important;
+  background-size:cover!important;
+  background-attachment:fixed!important;
+}
+body:after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(5,6,17,.72),rgba(5,6,17,.88)),url("./girl-shop.jpg") center 28%/cover no-repeat!important;
+  opacity:.48!important;
+}
+.store-banner{
+  background-image:linear-gradient(90deg,rgba(5,6,17,.70),rgba(5,6,17,.16)),url("./girl-shop.jpg")!important;
+  background-position:center 34%!important;background-size:cover!important;
+}
+.store-banner>img{
+  content:url("./girl-shop.jpg");object-fit:cover!important;object-position:center 34%!important;
+  opacity:.82!important;filter:saturate(1.08) contrast(1.03)!important;
+}
+.hh-splash-art{
+  background-image:linear-gradient(0deg,rgba(8,9,27,.88),transparent 52%),url("./girl-shop.jpg")!important;
+  background-size:cover!important;background-position:center 32%!important;
+}
+
 </style>
 </head>
 <body><div id="hhSplash" role="status" aria-live="polite"><div class="hh-splash-card"><div class="hh-splash-art" aria-hidden="true"></div><div class="hh-splash-main"><div class="hh-splash-crown">♛</div><div class="hh-splash-title">HOÀNG HẢI VNTD</div><div class="hh-splash-sub">DIGITAL STORE • 24/7</div><div class="hh-splash-status" id="hhSplashStatus">ĐANG KHỞI ĐỘNG CỬA HÀNG...</div><div class="hh-splash-progress-row"><div class="hh-splash-track"><div id="hhSplashBar"></div></div><div id="hhSplashPercent">1%</div></div><ul class="hh-splash-steps"><li id="hhStep1" class="active"><span class="dot">1</span>Tải giao diện và tài nguyên</li><li id="hhStep2"><span class="dot">2</span>Kết nối Supabase</li><li id="hhStep3"><span class="dot">3</span>Kiểm tra tài khoản và ví</li><li id="hhStep4"><span class="dot">4</span>Tải sản phẩm và kho KEY</li><li id="hhStep5"><span class="dot">5</span>Hoàn tất khởi tạo</li></ul><div id="hhSplashError"></div><button id="hhSplashContinue" type="button" onclick="hideHHSplash()">VÀO CỬA HÀNG</button></div></div></div>
@@ -347,7 +374,7 @@ button:after,.btn:after{background:linear-gradient(125deg,#69dfff,#5369c9 38%,#a
  <p class="trust-privacy">🔒 Để bảo vệ khách hàng, shop chỉ hiển thị mã khách đã ẩn danh và tên sản phẩm; không công khai email, số điện thoại, KEY, mật khẩu hoặc thông tin tài khoản.</p>
 </section>
 <div class="category-tabs"><button class="active" onclick="showCatalogSection('key')">🔑 MUA KEY</button><button onclick="showCatalogSection('acc')">🎮 MUA ACC GAME</button><button onclick="filterCategoryText('CHEAT')">⚡ CHEAT</button><button onclick="toast('Ưu đãi sẽ được cập nhật')">🎁 ƯU ĐÃI</button></div>
-<div class="store-banner"><img src="./hoang-hai-vntd-store-animated.gif" alt="Anime cute HOÀNG HẢI VNTD STORE" loading="eager" fetchpriority="high" decoding="async" onerror="this.style.display='none'"><div class="banner-overlay"><span>👑 FREE FIRE • STORE 24/7 👑</span><h1>HOÀNG HẢI<br><em>VNTD STORE</em></h1><p>Mua nhanh • Giao tự động • Hỗ trợ 24/7 ♡</p><strong>✦ TỔNG KHO SẢN PHẨM ✦</strong></div></div>
+<div class="store-banner"><img src="./girl-shop.jpg" alt="HOÀNG HẢI VNTD STORE banner portrait" loading="eager" fetchpriority="high" decoding="async" onerror="this.style.display='none'"><div class="banner-overlay"><span>👑 FREE FIRE • STORE 24/7 👑</span><h1>HOÀNG HẢI<br><em>VNTD STORE</em></h1><p>Mua nhanh • Giao tự động • Hỗ trợ 24/7 ♡</p><strong>✦ TỔNG KHO SẢN PHẨM ✦</strong></div></div>
 <div class="shop-welcome-line"><span>✦ KHO SẢN PHẨM SỐ ✦</span><b>Chọn đúng khu vực bạn cần</b></div>
 <div class="search-row"><input class="field" id="search" placeholder="⌕  Tìm KEY hoặc tài khoản game..."><button class="btn" onclick="document.getElementById('category').focus()">☷ LỌC</button></div>
 <div class="toolbar compact-toolbar"><select class="field" id="category"><option value="">Tất cả danh mục</option></select><select class="field" id="sort"><option value="new">Mới nhất</option><option value="low">Giá thấp → cao</option><option value="high">Giá cao → thấp</option></select></div>
