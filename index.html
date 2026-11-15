@@ -355,6 +355,46 @@ body:after{
   background-size:cover!important;background-position:center 32%!important;
 }
 
+
+/* HOÀNG HẢI VNTD — 2 ẢNH CHÂN DUNG ĐÃ CHỌN */
+body{
+  background-color:#050611!important;
+  background-image:
+    linear-gradient(180deg,rgba(5,6,17,.90),rgba(5,6,17,.94)),
+    url("./girl-shop-portrait-1.jpg")!important;
+  background-position:center top!important;
+  background-size:cover!important;
+  background-attachment:fixed!important;
+}
+body:after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(5,6,17,.78),rgba(5,6,17,.91)),
+    url("./girl-shop-portrait-2.jpg") center 24%/cover no-repeat!important;
+  opacity:.32!important;
+}
+.store-banner{
+  background-image:
+    linear-gradient(90deg,rgba(5,6,17,.66),rgba(5,6,17,.12)),
+    url("./girl-shop-portrait-1.jpg")!important;
+  background-position:center 30%!important;background-size:cover!important;
+}
+.store-banner>img{
+  content:url("./girl-shop-portrait-1.jpg")!important;
+  object-fit:cover!important;object-position:center 30%!important;
+  opacity:.86!important;filter:saturate(1.08) contrast(1.03)!important;
+}
+.hh-avatar img{
+  content:url("./girl-shop-portrait-2.jpg")!important;
+  object-fit:cover!important;object-position:center 30%!important;
+}
+.hh-splash-art{
+  background-image:
+    linear-gradient(0deg,rgba(8,9,27,.84),rgba(8,9,27,.08) 55%),
+    url("./girl-shop-portrait-2.jpg")!important;
+  background-size:cover!important;background-position:center 28%!important;
+}
+
 </style>
 </head>
 <body><div id="hhSplash" role="status" aria-live="polite"><div class="hh-splash-card"><div class="hh-splash-art" aria-hidden="true"></div><div class="hh-splash-main"><div class="hh-splash-crown">♛</div><div class="hh-splash-title">HOÀNG HẢI VNTD</div><div class="hh-splash-sub">DIGITAL STORE • 24/7</div><div class="hh-splash-status" id="hhSplashStatus">ĐANG KHỞI ĐỘNG CỬA HÀNG...</div><div class="hh-splash-progress-row"><div class="hh-splash-track"><div id="hhSplashBar"></div></div><div id="hhSplashPercent">1%</div></div><ul class="hh-splash-steps"><li id="hhStep1" class="active"><span class="dot">1</span>Tải giao diện và tài nguyên</li><li id="hhStep2"><span class="dot">2</span>Kết nối Supabase</li><li id="hhStep3"><span class="dot">3</span>Kiểm tra tài khoản và ví</li><li id="hhStep4"><span class="dot">4</span>Tải sản phẩm và kho KEY</li><li id="hhStep5"><span class="dot">5</span>Hoàn tất khởi tạo</li></ul><div id="hhSplashError"></div><button id="hhSplashContinue" type="button" onclick="hideHHSplash()">VÀO CỬA HÀNG</button></div></div></div>
@@ -362,7 +402,7 @@ body:after{
 <main class="wrap">
 <section id="shopView" class="store-home"><div class="welcome-card"><div class="eyebrow">✦ CHÀO MỪNG BẠN ĐẾN VỚI ✦</div><h2>HOÀNG HẢI VNTD STORE</h2><p>Cửa hàng sản phẩm số • Mua nhanh • Giao hàng tiện lợi • Hỗ trợ 24/7<br>Chúc bạn có trải nghiệm mua sắm vui vẻ ♡</p></div>
 <div class="store-profile kawaii-profile">
- <div class="profile-left"><div class="hh-avatar"><img src="./hoang-hai-vntd-store-animated.gif" alt="Ảnh anime Hoàng Hải" loading="eager" fetchpriority="high" decoding="async" width="160" height="160"><span class="avatar-crown">♛</span></div>
+ <div class="profile-left"><div class="hh-avatar"><img src="./girl-shop-portrait-2.jpg" alt="Ảnh chân dung Hoàng Hải VNTD" loading="eager" fetchpriority="high" decoding="async" width="160" height="160"><span class="avatar-crown">♛</span></div>
   <div class="profile-name"><div class="crown-name">👑 HOÀNG HẢI 👑</div><b>VNTD STORE</b><small>ID: 8846609260</small><span class="online-dot">● ONLINE 24/7</span></div>
  </div>
  <div class="profile-wallet"><div><small>👛 SỐ DƯ VÍ</small><b class="balance" id="walletBalanceMirror">0 ₫</b></div><button class="btn primary" onclick="openTopup()">💎 NẠP TIỀN</button></div>
@@ -374,7 +414,7 @@ body:after{
  <p class="trust-privacy">🔒 Để bảo vệ khách hàng, shop chỉ hiển thị mã khách đã ẩn danh và tên sản phẩm; không công khai email, số điện thoại, KEY, mật khẩu hoặc thông tin tài khoản.</p>
 </section>
 <div class="category-tabs"><button class="active" onclick="showCatalogSection('key')">🔑 MUA KEY</button><button onclick="showCatalogSection('acc')">🎮 MUA ACC GAME</button><button onclick="filterCategoryText('CHEAT')">⚡ CHEAT</button><button onclick="toast('Ưu đãi sẽ được cập nhật')">🎁 ƯU ĐÃI</button></div>
-<div class="store-banner"><img src="./girl-shop.jpg" alt="HOÀNG HẢI VNTD STORE banner portrait" loading="eager" fetchpriority="high" decoding="async" onerror="this.style.display='none'"><div class="banner-overlay"><span>👑 FREE FIRE • STORE 24/7 👑</span><h1>HOÀNG HẢI<br><em>VNTD STORE</em></h1><p>Mua nhanh • Giao tự động • Hỗ trợ 24/7 ♡</p><strong>✦ TỔNG KHO SẢN PHẨM ✦</strong></div></div>
+<div class="store-banner"><img src="./girl-shop-portrait-1.jpg" alt="Ảnh banner HOÀNG HẢI VNTD STORE" loading="eager" fetchpriority="high" decoding="async" onerror="this.style.display='none'"><div class="banner-overlay"><span>👑 FREE FIRE • STORE 24/7 👑</span><h1>HOÀNG HẢI<br><em>VNTD STORE</em></h1><p>Mua nhanh • Giao tự động • Hỗ trợ 24/7 ♡</p><strong>✦ TỔNG KHO SẢN PHẨM ✦</strong></div></div>
 <div class="shop-welcome-line"><span>✦ KHO SẢN PHẨM SỐ ✦</span><b>Chọn đúng khu vực bạn cần</b></div>
 <div class="search-row"><input class="field" id="search" placeholder="⌕  Tìm KEY hoặc tài khoản game..."><button class="btn" onclick="document.getElementById('category').focus()">☷ LỌC</button></div>
 <div class="toolbar compact-toolbar"><select class="field" id="category"><option value="">Tất cả danh mục</option></select><select class="field" id="sort"><option value="new">Mới nhất</option><option value="low">Giá thấp → cao</option><option value="high">Giá cao → thấp</option></select></div>
